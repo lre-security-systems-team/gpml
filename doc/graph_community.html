@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module graph_community</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>graph_community</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Cm.jaber%5Cpycharmprojects%5Cgpml%5Cgpml%5Cgpml%5Cmetrics%5Cgraph_community.py">c:\users\m.jaber\pycharmprojects\gpml\gpml\gpml\metrics\graph_community.py</a></font></td></tr></table>
+    <p><tt>#&nbsp;contributors:&nbsp;Julien&nbsp;MICHEL<br>
+#&nbsp;project&nbsp;started&nbsp;on&nbsp;11/10/2022</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="matplotlib.cm.html">matplotlib.cm</a><br>
+<a href="math.html">math</a><br>
+<a href="numpy.html">numpy</a><br>
+</td><td width="25%" valign=top><a href="networkx.html">networkx</a><br>
+<a href="pandas.html">pandas</a><br>
+<a href="matplotlib.pyplot.html">matplotlib.pyplot</a><br>
+</td><td width="25%" valign=top><a href="scipy.html">scipy</a><br>
+<a href="sys.html">sys</a><br>
+<a href="time.html">time</a><br>
+</td><td width="25%" valign=top><a href="timeit.html">timeit</a><br>
+<a href="unittest.html">unittest</a><br>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-compute_stabilities"><strong>compute_stabilities</strong></a>(g1, g2, nb_of_communities, old_stabilities, t)</dt><dd><tt>Compute&nbsp;stabilities&nbsp;between&nbsp;2&nbsp;graph&nbsp;and&nbsp;update&nbsp;global&nbsp;stabilities&nbsp;if&nbsp;there&nbsp;is&nbsp;a&nbsp;need&nbsp;to.<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+Stabilies&nbsp;between&nbsp;communities&nbsp;of&nbsp;g1&nbsp;and&nbsp;g2,&nbsp;and&nbsp;global&nbsp;stabilities&nbsp;for&nbsp;corresponding&nbsp;communities<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+:param&nbsp;g1:&nbsp;networkx&nbsp;multigraph<br>
+:param&nbsp;g2:&nbsp;networkx&nbsp;multigraph<br>
+:param&nbsp;nb_of_communities:&nbsp;int<br>
+:param&nbsp;old_stabilities:&nbsp;float&nbsp;List<br>
+:t:&nbsp;int</tt></dd></dl>
+ <dl><dt><a name="-gc_metrics"><strong>gc_metrics</strong></a>(G, partition)</dt><dd><tt>Compute&nbsp;different&nbsp;graph&nbsp;community&nbsp;metrics&nbsp;including&nbsp;density,&nbsp;externality,&nbsp;coverage,&nbsp;modularity,&nbsp;unifiability,<br>
+isolability&nbsp;,&nbsp;mean_community_size&nbsp;and&nbsp;number&nbsp;of&nbsp;cummunity&nbsp;per&nbsp;data<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Returns<br>
+&nbsp;&nbsp;&nbsp;&nbsp;-------<br>
+&nbsp;&nbsp;&nbsp;&nbsp;List&nbsp;of&nbsp;the&nbsp;different&nbsp;calculated&nbsp;graph&nbsp;community&nbsp;metrics<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Parameters<br>
+&nbsp;&nbsp;&nbsp;&nbsp;----------<br>
+&nbsp;&nbsp;&nbsp;&nbsp;:param&nbsp;G:&nbsp;networkx&nbsp;&nbsp;multigraph<br>
+&nbsp;&nbsp;&nbsp;&nbsp;:param&nbsp;partition:&nbsp;a&nbsp;community&nbsp;partition&nbsp;of&nbsp;G</tt></dd></dl>
+ <dl><dt><a name="-gc_metrics_first_order"><strong>gc_metrics_first_order</strong></a>(G)</dt><dd><tt>Compute&nbsp;different&nbsp;graph&nbsp;and&nbsp;graph&nbsp;community&nbsp;metrics&nbsp;of&nbsp;first&nbsp;order,<br>
+i.e.&nbsp;metrics&nbsp;thats&nbsp;are&nbsp;calculated&nbsp;by&nbsp;one&nbsp;run&nbsp;over&nbsp;edge&nbsp;and&nbsp;node&nbsp;of&nbsp;graph<br>
+and&nbsp;don't&nbsp;need&nbsp;other&nbsp;metrics&nbsp;value&nbsp;to&nbsp;be&nbsp;calculated.<br>
+Also,&nbsp;compute&nbsp;and&nbsp;get&nbsp;center&nbsp;of&nbsp;communities.<br>
+&nbsp;&nbsp;Returns<br>
+&nbsp;&nbsp;-------<br>
+&nbsp;&nbsp;List&nbsp;of&nbsp;the&nbsp;different&nbsp;calculated&nbsp;graph&nbsp;community&nbsp;metrics<br>
+&nbsp;<br>
+&nbsp;&nbsp;Parameters<br>
+&nbsp;&nbsp;----------<br>
+&nbsp;&nbsp;:param&nbsp;G:&nbsp;networkx&nbsp;&nbsp;multigraph</tt></dd></dl>
+ <dl><dt><a name="-gc_metrics_second_order"><strong>gc_metrics_second_order</strong></a>(fo_metrics_c, fo_metrics_g)</dt></dl>
+ <dl><dt><a name="-gc_ned"><strong>gc_ned</strong></a>(G, partition)</dt><dd><tt>Compute&nbsp;NEDIndex&nbsp;of&nbsp;a&nbsp;graph&nbsp;with&nbsp;community&nbsp;structure&nbsp;inside&nbsp;and&nbsp;Node-Edge-Degree(NED)&nbsp;of&nbsp;each&nbsp;community.<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+List&nbsp;with&nbsp;the&nbsp;NED&nbsp;of&nbsp;each&nbsp;community&nbsp;and&nbsp;NEDindex&nbsp;of&nbsp;the&nbsp;graphs<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+:param&nbsp;G:&nbsp;networkx&nbsp;&nbsp;multigraph<br>
+:param&nbsp;partition:&nbsp;a&nbsp;community&nbsp;partition&nbsp;of&nbsp;G</tt></dd></dl>
+ <dl><dt><a name="-propagate_community"><strong>propagate_community</strong></a>(g1, g2, center, center_t)</dt><dd><tt>propagate&nbsp;stabilities&nbsp;from&nbsp;g1&nbsp;to&nbsp;g2<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+New&nbsp;centers&nbsp;of&nbsp;communities&nbsp;in&nbsp;g2&nbsp;and&nbsp;update&nbsp;of&nbsp;communities&nbsp;index&nbsp;in&nbsp;g2<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+:param&nbsp;g1:&nbsp;networkx&nbsp;multigraph<br>
+:param&nbsp;g2:&nbsp;networkx&nbsp;multigraph<br>
+:param&nbsp;center:&nbsp;Nodes&nbsp;id&nbsp;list<br>
+:param&nbsp;center_t:&nbsp;Nodes&nbsp;id&nbsp;list</tt></dd></dl>
+</td></tr></table>
+</body></html>

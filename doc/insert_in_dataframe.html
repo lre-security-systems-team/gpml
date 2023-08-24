@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module insert_in_dataframe</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>insert_in_dataframe</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Cm.jaber%5Cpycharmprojects%5Cgpml%5Cgpml%5Cgpml%5Cdata_processing%5Cinsert_in_dataframe.py">c:\users\m.jaber\pycharmprojects\gpml\gpml\gpml\data_processing\insert_in_dataframe.py</a></font></td></tr></table>
+    <p><tt>#&nbsp;contributors:&nbsp;Julien&nbsp;MICHEL<br>
+#&nbsp;project&nbsp;started&nbsp;on&nbsp;11/10/2022</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="matplotlib.cm.html">matplotlib.cm</a><br>
+<a href="gpml.library.community.community_louvain.html">gpml.library.community.community_louvain</a><br>
+<a href="gpml.gpml.metrics.graph_community.html">gpml.gpml.metrics.graph_community</a><br>
+<a href="math.html">math</a><br>
+</td><td width="25%" valign=top><a href="numpy.html">numpy</a><br>
+<a href="networkx.html">networkx</a><br>
+<a href="pandas.html">pandas</a><br>
+<a href="matplotlib.pyplot.html">matplotlib.pyplot</a><br>
+</td><td width="25%" valign=top><a href="scipy.html">scipy</a><br>
+<a href="sys.html">sys</a><br>
+<a href="time.html">time</a><br>
+<a href="timeit.html">timeit</a><br>
+</td><td width="25%" valign=top><a href="unittest.html">unittest</a><br>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-chunk_read_and_insert_gc_metrics"><strong>chunk_read_and_insert_gc_metrics</strong></a>(file_name, output_csv, time_interval, community_strategy='louvain', chunksize=5000000, date_time='Date time', edge_source='Source IP', edge_dest='Destination IP')</dt><dd><tt>Use&nbsp;pandas&nbsp;to&nbsp;read&nbsp;a&nbsp;csv&nbsp;by&nbsp;chunk&nbsp;and&nbsp;write&nbsp;another&nbsp;csv&nbsp;with&nbsp;the&nbsp;same&nbsp;field&nbsp;+&nbsp;Ip&nbsp;graph&nbsp;communities&nbsp;metrics<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+output&nbsp;csv&nbsp;file&nbsp;with&nbsp;community&nbsp;metrics<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+:param&nbsp;file_name:&nbsp;input&nbsp;csv&nbsp;file<br>
+:param&nbsp;time_interval:&nbsp;timedelta&nbsp;of&nbsp;graph&nbsp;window<br>
+:param&nbsp;community_strategy:&nbsp;Nodes&nbsp;id&nbsp;list<br>
+:param&nbsp;chunksize:&nbsp;nb&nbsp;of&nbsp;csv&nbsp;line&nbsp;to&nbsp;load&nbsp;in&nbsp;memory&nbsp;as&nbsp;int<br>
+:param&nbsp;date_time:&nbsp;Name&nbsp;of&nbsp;the&nbsp;date&nbsp;field&nbsp;in&nbsp;csv<br>
+:param&nbsp;edge_source:&nbsp;Name&nbsp;of&nbsp;field&nbsp;in&nbsp;csv&nbsp;for&nbsp;edge&nbsp;source&nbsp;id<br>
+:parma&nbsp;edge_dest:&nbsp;Name&nbsp;of&nbsp;field&nbsp;in&nbsp;csv&nbsp;for&nbsp;edge&nbsp;destination&nbsp;id</tt></dd></dl>
+ <dl><dt><a name="-insert_community_metrics_to_dataframe"><strong>insert_community_metrics_to_dataframe</strong></a>(dataframe, edge_source, edge_dest, date_time, time_interval, label, name, date_timestamp)</dt><dd><tt>Take&nbsp;a&nbsp;dataframe,&nbsp;represent&nbsp;it&nbsp;on&nbsp;dynamic&nbsp;graph&nbsp;and&nbsp;compute&nbsp;community&nbsp;metrics.<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+return&nbsp;dataframe&nbsp;with&nbsp;community&nbsp;metrics<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+:param&nbsp;dataframe:&nbsp;pd.DataFrame()<br>
+:param&nbsp;time_interval:&nbsp;timedelta&nbsp;of&nbsp;graph&nbsp;window<br>
+:param&nbsp;date_time:&nbsp;Name&nbsp;of&nbsp;the&nbsp;date&nbsp;field&nbsp;in&nbsp;dataframe<br>
+:param&nbsp;edge_source:&nbsp;Name&nbsp;of&nbsp;field&nbsp;in&nbsp;dataframe&nbsp;for&nbsp;edge&nbsp;source&nbsp;id&nbsp;as&nbsp;list<br>
+:param&nbsp;edge_dest:&nbsp;Name&nbsp;of&nbsp;field&nbsp;in&nbsp;dataframe&nbsp;for&nbsp;edge&nbsp;destination&nbsp;id&nbsp;as&nbsp;list<br>
+:param&nbsp;label:&nbsp;Name&nbsp;of&nbsp;the&nbsp;target&nbsp;column&nbsp;in&nbsp;dataframe&nbsp;as&nbsp;str<br>
+:param&nbsp;name:&nbsp;name&nbsp;to&nbsp;attach&nbsp;to&nbsp;new&nbsp;column<br>
+:param&nbsp;date_timestamp:&nbsp;True&nbsp;or&nbsp;False&nbsp;if&nbsp;date&nbsp;column&nbsp;type&nbsp;is&nbsp;already&nbsp;timestamp</tt></dd></dl>
+ <dl><dt><a name="-insert_metrics_to_dataframe"><strong>insert_metrics_to_dataframe</strong></a>(dataframe, time_interval, date_time, edge_source, edge_dest, label, name, date_timestamp)</dt><dd><tt>Take&nbsp;a&nbsp;dataframe,&nbsp;represent&nbsp;it&nbsp;on&nbsp;dynamic&nbsp;graph&nbsp;and&nbsp;compute&nbsp;community&nbsp;metrics.<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+return&nbsp;dataframe&nbsp;with&nbsp;community&nbsp;metrics<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+:param&nbsp;dataframe:&nbsp;pd.DataFrame()<br>
+:param&nbsp;time_interval:&nbsp;timedelta&nbsp;of&nbsp;graph&nbsp;window<br>
+:param&nbsp;date_time:&nbsp;Name&nbsp;of&nbsp;the&nbsp;date&nbsp;field&nbsp;in&nbsp;dataframe<br>
+:param&nbsp;edge_source:&nbsp;Name&nbsp;of&nbsp;field&nbsp;in&nbsp;dataframe&nbsp;for&nbsp;edge&nbsp;source&nbsp;id&nbsp;as&nbsp;list<br>
+:param&nbsp;edge_dest:&nbsp;Name&nbsp;of&nbsp;field&nbsp;in&nbsp;dataframe&nbsp;for&nbsp;edge&nbsp;destination&nbsp;id&nbsp;as&nbsp;list<br>
+:param&nbsp;label:&nbsp;Name&nbsp;of&nbsp;the&nbsp;target&nbsp;column&nbsp;in&nbsp;dataframe&nbsp;as&nbsp;str<br>
+:param&nbsp;name:&nbsp;name&nbsp;to&nbsp;attach&nbsp;to&nbsp;new&nbsp;column<br>
+:param&nbsp;date_timestamp:&nbsp;True&nbsp;or&nbsp;False&nbsp;if&nbsp;date&nbsp;column&nbsp;type&nbsp;is&nbsp;already&nbsp;timestamp</tt></dd></dl>
+</td></tr></table>
+</body></html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module graphviz</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>graphviz</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Cm.jaber%5Cpycharmprojects%5Cgpml%5Cgpml%5Cgpml%5Cvisualisation%5Cgraphviz.py">c:\users\m.jaber\pycharmprojects\gpml\gpml\gpml\visualisation\graphviz.py</a></font></td></tr></table>
+    <p><tt>#&nbsp;contributors:&nbsp;Pierre&nbsp;Parrend,&nbsp;Amani&nbsp;Abou-Rida<br>
+#&nbsp;project&nbsp;started&nbsp;on&nbsp;11/10/2022</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="networkx.html">networkx</a><br>
+</td><td width="25%" valign=top><a href="matplotlib.pyplot.html">matplotlib.pyplot</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-extract_graph"><strong>extract_graph</strong></a>(dataset, graph_type, label, src_addr, dst_addr, src_port=0, dst_port=0, src_mac=0, dst_mac=0)</dt><dd><tt>Extract&nbsp;the&nbsp;graph&nbsp;attack&nbsp;according&nbsp;to&nbsp;the&nbsp;type&nbsp;we&nbsp;need&nbsp;to&nbsp;show<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+graph&nbsp;of&nbsp;nodes&nbsp;and&nbsp;edges&nbsp;,&nbsp;attack_list&nbsp;for&nbsp;the&nbsp;type&nbsp;of&nbsp;attack&nbsp;found&nbsp;on&nbsp;the&nbsp;edge&nbsp;between&nbsp;two&nbsp;nodes&nbsp;(ip&nbsp;sources)&nbsp;,<br>
+attack_labels&nbsp;for&nbsp;the&nbsp;label&nbsp;of&nbsp;the&nbsp;attacks&nbsp;in&nbsp;the&nbsp;dataset<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+:param&nbsp;dataset:&nbsp;dataset<br>
+:param&nbsp;dst_mac:&nbsp;destination&nbsp;mac<br>
+:param&nbsp;src_mac:&nbsp;source&nbsp;mac<br>
+:param&nbsp;dst_port:&nbsp;destination&nbsp;port<br>
+:param&nbsp;src_port:&nbsp;source&nbsp;port<br>
+:param&nbsp;dst_addr:&nbsp;destination&nbsp;ip<br>
+:param&nbsp;src_addr:&nbsp;source&nbsp;ip<br>
+:param&nbsp;label:&nbsp;label&nbsp;of&nbsp;the&nbsp;attack<br>
+:param&nbsp;graph_type:&nbsp;type&nbsp;of&nbsp;graph&nbsp;we&nbsp;need&nbsp;to&nbsp;show&nbsp;(ip,&nbsp;ip&nbsp;+&nbsp;proto,&nbsp;or&nbsp;ip&nbsp;+&nbsp;mac)</tt></dd></dl>
+ <dl><dt><a name="-print_graph"><strong>print_graph</strong></a>(dataset, graph_type, label, src_addr, dst_addr, url='../graphrepresentation', title='bot-iot-ddos-normal', attack_name='ddos', src_port=0, dst_port=0, src_mac=0, dst_mac=0)</dt><dd><tt>print&nbsp;the&nbsp;graph&nbsp;we&nbsp;extracted&nbsp;as&nbsp;nodes&nbsp;and&nbsp;edges&nbsp;in&nbsp;html&nbsp;file&nbsp;and&nbsp;networkx<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+print&nbsp;a&nbsp;graph&nbsp;with&nbsp;nodes&nbsp;and&nbsp;edges<br>
+&nbsp;<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+:param&nbsp;dataset:&nbsp;dataset<br>
+:param&nbsp;dst_mac:&nbsp;destination&nbsp;mac<br>
+:param&nbsp;src_mac:&nbsp;source&nbsp;mac<br>
+:param&nbsp;dst_port:&nbsp;destination&nbsp;port<br>
+:param&nbsp;src_port:&nbsp;source&nbsp;port<br>
+:param&nbsp;dst_addr:&nbsp;destination&nbsp;ip<br>
+:param&nbsp;src_addr:&nbsp;source&nbsp;ip<br>
+:param&nbsp;label:&nbsp;label&nbsp;of&nbsp;the&nbsp;attack<br>
+:param&nbsp;graph_type:&nbsp;type&nbsp;of&nbsp;graph&nbsp;we&nbsp;need&nbsp;to&nbsp;show&nbsp;(ip,&nbsp;ip&nbsp;+&nbsp;proto,&nbsp;or&nbsp;ip&nbsp;+&nbsp;mac)</tt></dd></dl>
+ <dl><dt><a name="-show_graph"><strong>show_graph</strong></a>(graph)</dt><dd><tt>Show&nbsp;the&nbsp;graph&nbsp;we&nbsp;extracted&nbsp;as&nbsp;nodes&nbsp;and&nbsp;edges&nbsp;in&nbsp;networkx<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+graph&nbsp;:&nbsp;graph&nbsp;with&nbsp;nodes&nbsp;and&nbsp;edges<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+display&nbsp;a&nbsp;graph&nbsp;with&nbsp;nodes&nbsp;and&nbsp;edges&nbsp;using&nbsp;networkx</tt></dd></dl>
+ <dl><dt><a name="-show_graph_as_html"><strong>show_graph_as_html</strong></a>(graph, attack_name, url, title)</dt><dd><tt>Show&nbsp;the&nbsp;graph&nbsp;we&nbsp;extracted&nbsp;as&nbsp;nodes&nbsp;and&nbsp;edges&nbsp;in&nbsp;html&nbsp;file<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+display&nbsp;a&nbsp;graph&nbsp;with&nbsp;nodes&nbsp;and&nbsp;edges&nbsp;using&nbsp;pyvis&nbsp;and&nbsp;save&nbsp;it&nbsp;as&nbsp;html&nbsp;file<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+:param&nbsp;graph:&nbsp;graph&nbsp;with&nbsp;nodes&nbsp;and&nbsp;edges<br>
+:param&nbsp;title:&nbsp;title&nbsp;of&nbsp;the&nbsp;html&nbsp;page<br>
+:param&nbsp;url:&nbsp;URL&nbsp;for&nbsp;saving&nbsp;html&nbsp;file<br>
+:param&nbsp;attack_name:&nbsp;name&nbsp;of&nbsp;the&nbsp;attack</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>attack_name</strong> = 'ddos'<br>
+<strong>daddr</strong> = 'daddr'<br>
+<strong>data_file</strong> = '../data/bot_iot/ddos-normal-filter.csv'<br>
+<strong>dmac</strong> = ''<br>
+<strong>dport</strong> = 'dport'<br>
+<strong>graph_type</strong> = 'ip'<br>
+<strong>label</strong> = 'attack'<br>
+<strong>saddr</strong> = 'saddr'<br>
+<strong>smac</strong> = ''<br>
+<strong>sport</strong> = 'sport'<br>
+<strong>title</strong> = 'bot-iot-ddos-normal'<br>
+<strong>url</strong> = '../graphrepresentation'</td></tr></table>
+</body></html>
