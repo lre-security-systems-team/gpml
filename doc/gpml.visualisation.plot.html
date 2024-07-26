@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module plot</title>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title">plot</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:../gpml/visualisation/plot.py">../gpml/visualisation/plot.py</a></td></tr></table>
+    <p><span class="code">This&nbsp;module&nbsp;provides&nbsp;functions&nbsp;to&nbsp;plot&nbsp;graphs.<br>
+&nbsp;<br>
+Contributors:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Julien&nbsp;MICHEL<br>
+&nbsp;<br>
+Project&nbsp;started&nbsp;on:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;11/10/2022</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="pandas.html">pandas</a><br>
+</td><td class="multicolumn"><a href="matplotlib.pyplot.html">matplotlib.pyplot</a><br>
+</td><td class="multicolumn"><a href="plotly.express.html">plotly.express</a><br>
+</td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-plot_features"><strong>plot_features</strong></a>(plot_data, x_feature, y_feature, z_feature, target_label, normal_cat, file_name_plot)</dt><dd><span class="code">Create&nbsp;and&nbsp;save&nbsp;a&nbsp;3D&nbsp;scatter&nbsp;plot&nbsp;of&nbsp;features&nbsp;from&nbsp;the&nbsp;provided&nbsp;dataset.<br>
+&nbsp;<br>
+This&nbsp;function&nbsp;visualizes&nbsp;the&nbsp;relationship&nbsp;between&nbsp;three&nbsp;features&nbsp;(x,&nbsp;y,&nbsp;z)&nbsp;in&nbsp;a&nbsp;3D&nbsp;space<br>
+with&nbsp;different&nbsp;colors&nbsp;indicating&nbsp;different&nbsp;categories&nbsp;as&nbsp;specified&nbsp;by&nbsp;the&nbsp;'target_label'.<br>
+Points&nbsp;representing&nbsp;the&nbsp;'normal_cat'&nbsp;category&nbsp;are&nbsp;colored&nbsp;blue,&nbsp;and&nbsp;other&nbsp;categories&nbsp;are<br>
+colored&nbsp;cyclically&nbsp;from&nbsp;a&nbsp;preset&nbsp;list.&nbsp;The&nbsp;plot&nbsp;is&nbsp;saved&nbsp;as&nbsp;a&nbsp;PNG&nbsp;file.<br>
+&nbsp;<br>
+Parameters:<br>
+-&nbsp;plot_data&nbsp;(DataFrame):&nbsp;The&nbsp;data&nbsp;containing&nbsp;the&nbsp;features&nbsp;to&nbsp;be&nbsp;plotted.<br>
+-&nbsp;x_feature&nbsp;(str):&nbsp;The&nbsp;name&nbsp;of&nbsp;the&nbsp;column&nbsp;in&nbsp;`plot_data`&nbsp;to&nbsp;be&nbsp;used&nbsp;as&nbsp;the&nbsp;x-axis&nbsp;values.<br>
+-&nbsp;y_feature&nbsp;(str):&nbsp;The&nbsp;name&nbsp;of&nbsp;the&nbsp;column&nbsp;in&nbsp;`plot_data`&nbsp;to&nbsp;be&nbsp;used&nbsp;as&nbsp;the&nbsp;y-axis&nbsp;values.<br>
+-&nbsp;z_feature&nbsp;(str):&nbsp;The&nbsp;name&nbsp;of&nbsp;the&nbsp;column&nbsp;in&nbsp;`plot_data`&nbsp;to&nbsp;be&nbsp;used&nbsp;as&nbsp;the&nbsp;z-axis&nbsp;values.<br>
+-&nbsp;target_label&nbsp;(str):&nbsp;The&nbsp;name&nbsp;of&nbsp;the&nbsp;column&nbsp;in&nbsp;`plot_data`&nbsp;that&nbsp;contains&nbsp;the&nbsp;categorical<br>
+&nbsp;&nbsp;data&nbsp;used&nbsp;to&nbsp;differentiate&nbsp;the&nbsp;data&nbsp;points&nbsp;in&nbsp;the&nbsp;plot.<br>
+-&nbsp;normal_cat&nbsp;(str):&nbsp;The&nbsp;category&nbsp;within&nbsp;`target_label`&nbsp;that&nbsp;is&nbsp;considered&nbsp;'normal'&nbsp;and<br>
+&nbsp;&nbsp;is&nbsp;specially&nbsp;colored&nbsp;blue.<br>
+-&nbsp;file_name_plot&nbsp;(str):&nbsp;The&nbsp;base&nbsp;name&nbsp;for&nbsp;the&nbsp;output&nbsp;plot&nbsp;file.&nbsp;The&nbsp;plot&nbsp;is&nbsp;saved&nbsp;with<br>
+&nbsp;&nbsp;this&nbsp;name&nbsp;prefixed&nbsp;by&nbsp;"high_gain_features_".<br>
+&nbsp;<br>
+Outputs:<br>
+-&nbsp;A&nbsp;PNG&nbsp;file&nbsp;named&nbsp;"high_gain_features_&lt;file_name_plot&gt;.png"&nbsp;saved&nbsp;in&nbsp;the&nbsp;current&nbsp;directory.<br>
+&nbsp;<br>
+Example&nbsp;Usage:<br>
+<a href="#-plot_features">plot_features</a>(df,&nbsp;'Feature1',&nbsp;'Feature2',&nbsp;'Feature3',&nbsp;'Category',&nbsp;'Normal',&nbsp;'output_plot')</span></dd></dl>
+ <dl><dt><a name="-plot_high_gain_features"><strong>plot_high_gain_features</strong></a>(clf, file_name_plot, df_numerical_data, attack_label, targets_labels)</dt><dd><span class="code">Identify&nbsp;and&nbsp;visualize&nbsp;the&nbsp;top&nbsp;three&nbsp;features&nbsp;with&nbsp;the&nbsp;highest&nbsp;importance&nbsp;from&nbsp;a&nbsp;classifier.<br>
+&nbsp;<br>
+This&nbsp;function&nbsp;extracts&nbsp;the&nbsp;three&nbsp;features&nbsp;with&nbsp;the&nbsp;highest&nbsp;importance&nbsp;scores&nbsp;from&nbsp;the<br>
+provided&nbsp;classifier,&nbsp;then&nbsp;creates&nbsp;a&nbsp;DataFrame&nbsp;containing&nbsp;these&nbsp;features&nbsp;along&nbsp;with&nbsp;the<br>
+attack&nbsp;labels.&nbsp;It&nbsp;then&nbsp;calls&nbsp;`plot_features`&nbsp;to&nbsp;generate&nbsp;and&nbsp;save&nbsp;a&nbsp;3D&nbsp;visualization.<br>
+&nbsp;<br>
+Parameters:<br>
+-&nbsp;clf&nbsp;(classifier):&nbsp;The&nbsp;trained&nbsp;model&nbsp;from&nbsp;which&nbsp;to&nbsp;get&nbsp;the&nbsp;feature&nbsp;importances.<br>
+-&nbsp;file_name_plot&nbsp;(str):&nbsp;The&nbsp;base&nbsp;name&nbsp;for&nbsp;the&nbsp;output&nbsp;plot&nbsp;file.<br>
+-&nbsp;df_numerical_data&nbsp;(DataFrame):&nbsp;DataFrame&nbsp;containing&nbsp;the&nbsp;numerical&nbsp;features&nbsp;used&nbsp;by<br>
+&nbsp;&nbsp;the&nbsp;classifier.<br>
+-&nbsp;attack_label&nbsp;(str):&nbsp;The&nbsp;name&nbsp;of&nbsp;the&nbsp;column&nbsp;to&nbsp;be&nbsp;used&nbsp;as&nbsp;the&nbsp;label&nbsp;for&nbsp;coloring&nbsp;the<br>
+&nbsp;&nbsp;data&nbsp;points&nbsp;in&nbsp;the&nbsp;plot.<br>
+-&nbsp;targets_labels&nbsp;(Series&nbsp;or&nbsp;array-like):&nbsp;Labels&nbsp;corresponding&nbsp;to&nbsp;each&nbsp;row&nbsp;in<br>
+&nbsp;&nbsp;`df_numerical_data`&nbsp;to&nbsp;be&nbsp;used&nbsp;for&nbsp;coloring&nbsp;in&nbsp;the&nbsp;plot.<br>
+&nbsp;<br>
+Outputs:<br>
+-&nbsp;A&nbsp;3D&nbsp;scatter&nbsp;plot&nbsp;saved&nbsp;as&nbsp;a&nbsp;PNG&nbsp;file,&nbsp;which&nbsp;visualizes&nbsp;the&nbsp;three&nbsp;features&nbsp;with<br>
+&nbsp;&nbsp;the&nbsp;highest&nbsp;importance&nbsp;scores&nbsp;and&nbsp;differentiates&nbsp;points&nbsp;by&nbsp;attack&nbsp;categories.</span></dd></dl>
+ <dl><dt><a name="-plot_importance"><strong>plot_importance</strong></a>(clf, file_name_plot, metric='all')</dt><dd><span class="code">Generate&nbsp;bar&nbsp;plots&nbsp;for&nbsp;feature&nbsp;importances&nbsp;based&nbsp;on&nbsp;the&nbsp;specified&nbsp;metric.<br>
+&nbsp;<br>
+This&nbsp;function&nbsp;generates&nbsp;bar&nbsp;plots&nbsp;for&nbsp;the&nbsp;feature&nbsp;importances&nbsp;based&nbsp;on&nbsp;the&nbsp;specified<br>
+metric&nbsp;('gain',&nbsp;'weight',&nbsp;'cover',&nbsp;or&nbsp;'all').&nbsp;It&nbsp;supports&nbsp;plotting&nbsp;multiple&nbsp;types&nbsp;of<br>
+importances&nbsp;if&nbsp;'all'&nbsp;is&nbsp;specified.&nbsp;Each&nbsp;plot&nbsp;is&nbsp;displayed&nbsp;and&nbsp;saved&nbsp;as&nbsp;a&nbsp;PNG&nbsp;file.<br>
+&nbsp;<br>
+Parameters:<br>
+-&nbsp;clf&nbsp;(classifier):&nbsp;The&nbsp;classifier&nbsp;from&nbsp;which&nbsp;to&nbsp;get&nbsp;the&nbsp;feature&nbsp;importances.&nbsp;The<br>
+&nbsp;&nbsp;classifier&nbsp;should&nbsp;have&nbsp;the&nbsp;`feature_names_in_`&nbsp;attribute&nbsp;and&nbsp;methods&nbsp;like<br>
+&nbsp;&nbsp;`get_booster().get_score()`.<br>
+-&nbsp;file_name_plot&nbsp;(str):&nbsp;The&nbsp;base&nbsp;name&nbsp;for&nbsp;the&nbsp;output&nbsp;plot&nbsp;files.&nbsp;This&nbsp;string&nbsp;is&nbsp;used<br>
+&nbsp;&nbsp;to&nbsp;generate&nbsp;filenames&nbsp;for&nbsp;each&nbsp;plot.<br>
+-&nbsp;metric&nbsp;(str,&nbsp;optional):&nbsp;The&nbsp;type&nbsp;of&nbsp;importance&nbsp;to&nbsp;plot.&nbsp;Valid&nbsp;options&nbsp;are&nbsp;'gain',<br>
+&nbsp;&nbsp;'weight',&nbsp;'cover',&nbsp;or&nbsp;'all'.&nbsp;Default&nbsp;is&nbsp;'all'.<br>
+&nbsp;<br>
+Outputs:<br>
+-&nbsp;PNG&nbsp;files:&nbsp;For&nbsp;each&nbsp;specified&nbsp;type&nbsp;of&nbsp;importance,&nbsp;a&nbsp;PNG&nbsp;file&nbsp;is&nbsp;saved&nbsp;in&nbsp;the&nbsp;'fig/'<br>
+&nbsp;&nbsp;directory.&nbsp;The&nbsp;filenames&nbsp;are&nbsp;constructed&nbsp;using&nbsp;the&nbsp;base&nbsp;name&nbsp;provided&nbsp;and&nbsp;the&nbsp;type<br>
+&nbsp;&nbsp;of&nbsp;metric.</span></dd></dl>
+</td></tr></table>
+</body></html>

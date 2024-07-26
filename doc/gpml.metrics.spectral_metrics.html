@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module spectral_metrics</title>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title">spectral_metrics</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:../gpml/metrics/spectral_metrics.py">../gpml/metrics/spectral_metrics.py</a></td></tr></table>
+    <p><span class="code">This&nbsp;module&nbsp;provides&nbsp;functionalities&nbsp;for&nbsp;computing&nbsp;various&nbsp;spectral&nbsp;metrics&nbsp;used&nbsp;in&nbsp;dynamic&nbsp;graph&nbsp;analysis.<br>
+&nbsp;<br>
+It&nbsp;includes&nbsp;functions&nbsp;to&nbsp;compute&nbsp;connectedness,&nbsp;flooding,&nbsp;wiriness,&nbsp;and&nbsp;asymmetry&nbsp;based&nbsp;on&nbsp;the&nbsp;spectral&nbsp;properties&nbsp;of&nbsp;graphs.<br>
+&nbsp;<br>
+Functions:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;connectedness&nbsp;-&nbsp;Computes&nbsp;the&nbsp;connectedness&nbsp;metric&nbsp;based&nbsp;on&nbsp;the&nbsp;spectral&nbsp;properties&nbsp;and&nbsp;number&nbsp;of&nbsp;components.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;flooding&nbsp;-&nbsp;Computes&nbsp;the&nbsp;flooding&nbsp;metric&nbsp;based&nbsp;on&nbsp;the&nbsp;algebraic&nbsp;connectivity&nbsp;of&nbsp;the&nbsp;graph.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;wireness&nbsp;-&nbsp;Computes&nbsp;the&nbsp;wireness&nbsp;metric&nbsp;based&nbsp;on&nbsp;the&nbsp;maximum&nbsp;degree&nbsp;of&nbsp;the&nbsp;graph.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;asymmetry&nbsp;-&nbsp;Computes&nbsp;the&nbsp;asymmetry&nbsp;metric&nbsp;based&nbsp;on&nbsp;the&nbsp;differences&nbsp;in&nbsp;the&nbsp;spectrum.<br>
+&nbsp;<br>
+Contributors:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Majed&nbsp;JABER<br>
+&nbsp;<br>
+Project&nbsp;started&nbsp;on:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;[Project&nbsp;Start&nbsp;Date]</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="math.html">math</a><br>
+<a href="numpy.html">numpy</a><br>
+</td><td class="multicolumn"><a href="networkx.html">networkx</a><br>
+<a href="pandas.html">pandas</a><br>
+</td><td class="multicolumn"><a href="statistics.html">statistics</a><br>
+</td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-asymmetry"><strong>asymmetry</strong></a>(spec)</dt><dd><span class="code">Compute&nbsp;the&nbsp;asymmetry&nbsp;metric&nbsp;based&nbsp;on&nbsp;the&nbsp;differences&nbsp;in&nbsp;the&nbsp;spectrum.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+:param&nbsp;spec:&nbsp;array-like&nbsp;-&nbsp;The&nbsp;spectral&nbsp;properties&nbsp;of&nbsp;the&nbsp;graph.<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+int&nbsp;-&nbsp;The&nbsp;asymmetry&nbsp;metric.</span></dd></dl>
+ <dl><dt><a name="-connectedness"><strong>connectedness</strong></a>(num_components)</dt><dd><span class="code">Compute&nbsp;the&nbsp;connectedness&nbsp;metric&nbsp;based&nbsp;on&nbsp;the&nbsp;spectral&nbsp;properties&nbsp;and&nbsp;number&nbsp;of&nbsp;components.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+:param&nbsp;spec:&nbsp;array-like&nbsp;-&nbsp;The&nbsp;spectral&nbsp;properties&nbsp;of&nbsp;the&nbsp;graph.<br>
+:param&nbsp;num_components:&nbsp;int&nbsp;-&nbsp;The&nbsp;number&nbsp;of&nbsp;components&nbsp;in&nbsp;the&nbsp;graph.<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+float&nbsp;-&nbsp;The&nbsp;connectedness&nbsp;metric.</span></dd></dl>
+ <dl><dt><a name="-extract_spectrum"><strong>extract_spectrum</strong></a>(time_window_df, src, dst, edge_weight)</dt><dd><span class="code">Construct&nbsp;a&nbsp;graph&nbsp;from&nbsp;time&nbsp;window&nbsp;data&nbsp;and&nbsp;compute&nbsp;its&nbsp;spectral&nbsp;properties.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+:param&nbsp;tw:&nbsp;pd.DataFrame&nbsp;-&nbsp;The&nbsp;dataframe&nbsp;containing&nbsp;the&nbsp;time&nbsp;window&nbsp;data.<br>
+:param&nbsp;src:&nbsp;str&nbsp;-&nbsp;The&nbsp;name&nbsp;of&nbsp;the&nbsp;source&nbsp;column&nbsp;in&nbsp;the&nbsp;dataframe.<br>
+:param&nbsp;dst:&nbsp;str&nbsp;-&nbsp;The&nbsp;name&nbsp;of&nbsp;the&nbsp;destination&nbsp;column&nbsp;in&nbsp;the&nbsp;dataframe.<br>
+:param&nbsp;edge_weight:&nbsp;str&nbsp;-&nbsp;The&nbsp;name&nbsp;of&nbsp;the&nbsp;edge&nbsp;weight&nbsp;column&nbsp;in&nbsp;the&nbsp;dataframe.<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+tuple&nbsp;-&nbsp;A&nbsp;tuple&nbsp;containing&nbsp;the&nbsp;graph,&nbsp;its&nbsp;Laplacian&nbsp;matrix,&nbsp;and&nbsp;its&nbsp;sorted&nbsp;eigenvalues.</span></dd></dl>
+ <dl><dt><a name="-flooding"><strong>flooding</strong></a>(spec, num_components)</dt><dd><span class="code">Compute&nbsp;the&nbsp;flooding&nbsp;metric&nbsp;based&nbsp;on&nbsp;the&nbsp;algebraic&nbsp;connectivity&nbsp;of&nbsp;the&nbsp;graph.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+:param&nbsp;spec:&nbsp;array-like&nbsp;-&nbsp;The&nbsp;spectral&nbsp;properties&nbsp;of&nbsp;the&nbsp;graph.<br>
+:param&nbsp;num_components:&nbsp;int&nbsp;-&nbsp;The&nbsp;number&nbsp;of&nbsp;components&nbsp;in&nbsp;the&nbsp;graph.<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+float&nbsp;-&nbsp;The&nbsp;flooding&nbsp;metric.</span></dd></dl>
+ <dl><dt><a name="-get_first_value"><strong>get_first_value</strong></a>(series)</dt><dd><span class="code">Retrieve&nbsp;the&nbsp;first&nbsp;value&nbsp;in&nbsp;a&nbsp;pandas&nbsp;series.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+:param&nbsp;series:&nbsp;pd.Series&nbsp;-&nbsp;The&nbsp;input&nbsp;pandas&nbsp;series.<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+The&nbsp;first&nbsp;value&nbsp;in&nbsp;the&nbsp;series.</span></dd></dl>
+ <dl><dt><a name="-spectral_metrics_extractor"><strong>spectral_metrics_extractor</strong></a>(ts, stime, saddr, daddr, pkts, bytes_size, rate, lbl_category)</dt><dd><span class="code">Apply&nbsp;time&nbsp;windowing&nbsp;techniques&nbsp;on&nbsp;the&nbsp;time&nbsp;series&nbsp;data,&nbsp;computing&nbsp;various&nbsp;spectral&nbsp;metrics&nbsp;for&nbsp;each&nbsp;window.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+:param&nbsp;ts:&nbsp;pd.DataFrame&nbsp;-&nbsp;The&nbsp;input&nbsp;time&nbsp;series&nbsp;dataframe.<br>
+:param&nbsp;stime:&nbsp;str&nbsp;-&nbsp;The&nbsp;name&nbsp;of&nbsp;the&nbsp;start&nbsp;time&nbsp;column&nbsp;in&nbsp;the&nbsp;dataframe.<br>
+:param&nbsp;saddr:&nbsp;str&nbsp;-&nbsp;The&nbsp;name&nbsp;of&nbsp;the&nbsp;source&nbsp;address&nbsp;column&nbsp;in&nbsp;the&nbsp;dataframe.<br>
+:param&nbsp;daddr:&nbsp;str&nbsp;-&nbsp;The&nbsp;name&nbsp;of&nbsp;the&nbsp;destination&nbsp;address&nbsp;column&nbsp;in&nbsp;the&nbsp;dataframe.<br>
+:param&nbsp;pkts:&nbsp;str&nbsp;-&nbsp;The&nbsp;name&nbsp;of&nbsp;the&nbsp;packets&nbsp;column&nbsp;in&nbsp;the&nbsp;dataframe.<br>
+:param&nbsp;bytes:&nbsp;str&nbsp;-&nbsp;The&nbsp;name&nbsp;of&nbsp;the&nbsp;bytes&nbsp;column&nbsp;in&nbsp;the&nbsp;dataframe.<br>
+:param&nbsp;rate:&nbsp;str&nbsp;-&nbsp;The&nbsp;name&nbsp;of&nbsp;the&nbsp;rate&nbsp;column&nbsp;in&nbsp;the&nbsp;dataframe.<br>
+:param&nbsp;lbl_category:&nbsp;str&nbsp;-&nbsp;The&nbsp;name&nbsp;of&nbsp;the&nbsp;label&nbsp;category&nbsp;column&nbsp;in&nbsp;the&nbsp;dataframe.<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+pd.DataFrame&nbsp;-&nbsp;The&nbsp;transformed&nbsp;dataframe&nbsp;with&nbsp;computed&nbsp;spectral&nbsp;metrics&nbsp;for&nbsp;each&nbsp;time&nbsp;window.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bytes_size:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bytes_size:</span></dd></dl>
+ <dl><dt><a name="-wireness"><strong>wireness</strong></a>(spec, num_components)</dt><dd><span class="code">Compute&nbsp;the&nbsp;wireness&nbsp;metric&nbsp;based&nbsp;on&nbsp;the&nbsp;maximum&nbsp;degree&nbsp;of&nbsp;the&nbsp;graph.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+:param&nbsp;spec:&nbsp;array-like&nbsp;-&nbsp;The&nbsp;spectral&nbsp;properties&nbsp;of&nbsp;the&nbsp;graph.<br>
+:param&nbsp;num_components:&nbsp;int&nbsp;-&nbsp;The&nbsp;number&nbsp;of&nbsp;components&nbsp;in&nbsp;the&nbsp;graph.<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+float&nbsp;-&nbsp;The&nbsp;wireness&nbsp;metric.</span></dd></dl>
+</td></tr></table>
+</body></html>

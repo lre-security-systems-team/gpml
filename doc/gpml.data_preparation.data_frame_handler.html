@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module data_frame_handler</title>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title">data_frame_handler</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:../gpml/data_preparation/data_frame_handler.py">../gpml/data_preparation/data_frame_handler.py</a></td></tr></table>
+    <p><span class="code">This&nbsp;module&nbsp;provides&nbsp;functionalities&nbsp;for&nbsp;analyzing&nbsp;and&nbsp;computing&nbsp;network&nbsp;community&nbsp;metrics&nbsp;over&nbsp;dynamic&nbsp;graphs.<br>
+&nbsp;<br>
+It&nbsp;includes&nbsp;functions&nbsp;to&nbsp;process&nbsp;graphs&nbsp;based&nbsp;on&nbsp;data&nbsp;read&nbsp;from&nbsp;CSV&nbsp;files,&nbsp;compute&nbsp;various<br>
+1rst&nbsp;and&nbsp;2nd&nbsp;order&nbsp;community&nbsp;metrics,&nbsp;and&nbsp;incorporate&nbsp;those&nbsp;metrics&nbsp;back&nbsp;into&nbsp;the&nbsp;data<br>
+for&nbsp;further&nbsp;analysis.<br>
+The&nbsp;module&nbsp;supports&nbsp;multiplecommunity&nbsp;detection&nbsp;strategies&nbsp;and&nbsp;offers&nbsp;tools<br>
+for&nbsp;dynamic&nbsp;graph&nbsp;analysis.<br>
+&nbsp;<br>
+Functions:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;chunk_read_and_insert_gc_metrics&nbsp;-&nbsp;Processes&nbsp;chunks&nbsp;of&nbsp;CSV&nbsp;data&nbsp;to&nbsp;compute&nbsp;community&nbsp;metrics<br>
+&nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;outputs&nbsp;to&nbsp;a&nbsp;new&nbsp;CSV.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;insert_metrics_to_dataframe&nbsp;-&nbsp;Computes&nbsp;community&nbsp;metrics&nbsp;for&nbsp;a&nbsp;given&nbsp;dataframe<br>
+&nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;updates&nbsp;it&nbsp;with&nbsp;new&nbsp;metrics&nbsp;columns.<br>
+&nbsp;<br>
+Contributors:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Julien&nbsp;MICHEL<br>
+&nbsp;<br>
+Project&nbsp;started&nbsp;on:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;11/10/2022</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="library.community.community_louvain.html">library.community.community_louvain</a><br>
+<a href="gpml.metrics.graph_community.html">gpml.metrics.graph_community</a><br>
+<a href="igraph.html">igraph</a><br>
+</td><td class="multicolumn"><a href="itertools.html">itertools</a><br>
+<a href="networkx.html">networkx</a><br>
+<a href="networkx.algorithms.community.html">networkx.algorithms.community</a><br>
+</td><td class="multicolumn"><a href="pandas.html">pandas</a><br>
+<a href="sys.html">sys</a><br>
+<a href="time.html">time</a><br>
+</td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-chunk_read_and_insert_gc_metrics"><strong>chunk_read_and_insert_gc_metrics</strong></a>(file_name, output_csv, time_interval, header=None, community_strategy='louvain', chunksize=5000000, date_time='Date time', edge_source=None, edge_dest=None, label='Label', name='default')</dt><dd><span class="code">Use&nbsp;pandas&nbsp;to&nbsp;read&nbsp;a&nbsp;csv&nbsp;by&nbsp;chunk&nbsp;and&nbsp;write&nbsp;another&nbsp;csv&nbsp;with&nbsp;the&nbsp;same&nbsp;field&nbsp;+&nbsp;graph&nbsp;communities&nbsp;metrics.<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+output&nbsp;csv&nbsp;file&nbsp;with&nbsp;community&nbsp;metrics<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+:param&nbsp;file_name:&nbsp;input&nbsp;csv&nbsp;file<br>
+:param&nbsp;output_csv:&nbsp;output&nbsp;csv&nbsp;file<br>
+:param&nbsp;time_interval:&nbsp;timedelta&nbsp;of&nbsp;graph&nbsp;window<br>
+:param&nbsp;community_strategy:&nbsp;Name&nbsp;of&nbsp;community&nbsp;strategy<br>
+:param&nbsp;chunksize:&nbsp;nb&nbsp;of&nbsp;csv&nbsp;line&nbsp;to&nbsp;load&nbsp;in&nbsp;memory&nbsp;as&nbsp;int<br>
+:param&nbsp;date_time:&nbsp;Name&nbsp;of&nbsp;the&nbsp;date&nbsp;field&nbsp;in&nbsp;csv<br>
+:param&nbsp;edge_source:&nbsp;Name&nbsp;of&nbsp;field&nbsp;in&nbsp;csv&nbsp;for&nbsp;edge&nbsp;source&nbsp;id&nbsp;as&nbsp;list<br>
+:param&nbsp;edge_dest:&nbsp;Name&nbsp;of&nbsp;field&nbsp;in&nbsp;csv&nbsp;for&nbsp;edge&nbsp;destination&nbsp;id&nbsp;as&nbsp;list<br>
+:param&nbsp;label:&nbsp;Name&nbsp;of&nbsp;the&nbsp;label&nbsp;filed&nbsp;in&nbsp;csv<br>
+:param&nbsp;name:&nbsp;naming&nbsp;suffix&nbsp;for&nbsp;metrics</span></dd></dl>
+ <dl><dt><a name="-insert_metrics_to_dataframe"><strong>insert_metrics_to_dataframe</strong></a>(dataframe, time_interval, date_time, edge_source, edge_dest, label, name, date_timestamp, community_strategy='louvain')</dt><dd><span class="code">Take&nbsp;a&nbsp;dataframe,&nbsp;represent&nbsp;it&nbsp;on&nbsp;dynamic&nbsp;graph&nbsp;and&nbsp;compute&nbsp;community&nbsp;metrics.<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+return&nbsp;dataframe&nbsp;with&nbsp;community&nbsp;metrics<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+:param&nbsp;dataframe:&nbsp;pd.DataFrame()<br>
+:param&nbsp;time_interval:&nbsp;timedelta&nbsp;of&nbsp;graph&nbsp;window<br>
+:param&nbsp;date_time:&nbsp;Name&nbsp;of&nbsp;the&nbsp;date&nbsp;field&nbsp;in&nbsp;dataframe<br>
+:param&nbsp;edge_source:&nbsp;Name&nbsp;of&nbsp;field&nbsp;in&nbsp;dataframe&nbsp;for&nbsp;edge&nbsp;source&nbsp;id&nbsp;as&nbsp;list<br>
+:param&nbsp;edge_dest:&nbsp;Name&nbsp;of&nbsp;field&nbsp;in&nbsp;dataframe&nbsp;for&nbsp;edge&nbsp;destination&nbsp;id&nbsp;as&nbsp;list<br>
+:param&nbsp;label:&nbsp;Name&nbsp;of&nbsp;the&nbsp;target&nbsp;column&nbsp;in&nbsp;dataframe&nbsp;as&nbsp;str<br>
+:param&nbsp;name:&nbsp;name&nbsp;to&nbsp;attach&nbsp;to&nbsp;new&nbsp;column<br>
+:param&nbsp;date_timestamp:&nbsp;True&nbsp;or&nbsp;False&nbsp;if&nbsp;date&nbsp;column&nbsp;type&nbsp;is&nbsp;already&nbsp;timestamp</span></dd></dl>
+ <dl><dt><a name="-nested_insert_metrics_to_dataframe"><strong>nested_insert_metrics_to_dataframe</strong></a>(dataframe, time_interval, date_time, edge_source, edge_dest, label, name, date_timestamp, community_strategy='louvain', time_0=0, buffer_graph=None)</dt><dd><span class="code">Take&nbsp;a&nbsp;dataframe,&nbsp;represent&nbsp;it&nbsp;on&nbsp;dynamic&nbsp;graph&nbsp;and&nbsp;compute&nbsp;community&nbsp;metrics.<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+return&nbsp;dataframe&nbsp;with&nbsp;community&nbsp;metrics<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+:param&nbsp;dataframe:&nbsp;pd.DataFrame()<br>
+:param&nbsp;time_interval:&nbsp;timedelta&nbsp;of&nbsp;graph&nbsp;window<br>
+:param&nbsp;date_time:&nbsp;Name&nbsp;of&nbsp;the&nbsp;date&nbsp;field&nbsp;in&nbsp;dataframe<br>
+:param&nbsp;edge_source:&nbsp;Name&nbsp;of&nbsp;field&nbsp;in&nbsp;dataframe&nbsp;for&nbsp;edge&nbsp;source&nbsp;id&nbsp;as&nbsp;list<br>
+:param&nbsp;edge_dest:&nbsp;Name&nbsp;of&nbsp;field&nbsp;in&nbsp;dataframe&nbsp;for&nbsp;edge&nbsp;destination&nbsp;id&nbsp;as&nbsp;list<br>
+:param&nbsp;label:&nbsp;Name&nbsp;of&nbsp;the&nbsp;target&nbsp;column&nbsp;in&nbsp;dataframe&nbsp;as&nbsp;str<br>
+:param&nbsp;name:&nbsp;name&nbsp;to&nbsp;attach&nbsp;to&nbsp;new&nbsp;column<br>
+:param&nbsp;date_timestamp:&nbsp;True&nbsp;or&nbsp;False&nbsp;if&nbsp;date&nbsp;column&nbsp;type&nbsp;is&nbsp;already&nbsp;timestamp<br>
+:param&nbsp;buffer_graph:&nbsp;None&nbsp;if&nbsp;first&nbsp;chunk,&nbsp;last&nbsp;graph&nbsp;otherwise</span></dd></dl>
+</td></tr></table>
+</body></html>

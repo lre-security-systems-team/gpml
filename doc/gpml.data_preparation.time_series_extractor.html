@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module time_series_extractor</title>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title">time_series_extractor</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:../gpml/data_preparation/time_series_extractor.py">../gpml/data_preparation/time_series_extractor.py</a></td></tr></table>
+    <p><span class="code">This&nbsp;module&nbsp;provides&nbsp;functionalities&nbsp;for&nbsp;analyzing&nbsp;and&nbsp;transforming&nbsp;network&nbsp;traffic&nbsp;data.<br>
+&nbsp;<br>
+Functions:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;timeseries_transformation&nbsp;-&nbsp;Converts&nbsp;raw&nbsp;data&nbsp;into&nbsp;a&nbsp;time&nbsp;series&nbsp;format&nbsp;by&nbsp;grouping&nbsp;and&nbsp;aggregating&nbsp;specified&nbsp;features.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;extract_spectrum&nbsp;-&nbsp;Constructs&nbsp;a&nbsp;graph&nbsp;from&nbsp;time&nbsp;window&nbsp;data&nbsp;and&nbsp;computes&nbsp;its&nbsp;spectral&nbsp;properties.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;get_first_value&nbsp;-&nbsp;Retrieves&nbsp;the&nbsp;first&nbsp;value&nbsp;in&nbsp;a&nbsp;pandas&nbsp;series.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;timewindow_transformation&nbsp;-&nbsp;Applies&nbsp;time&nbsp;windowing&nbsp;techniques&nbsp;on&nbsp;the&nbsp;time&nbsp;series&nbsp;data,&nbsp;computing&nbsp;various&nbsp;spectral&nbsp;metrics&nbsp;for&nbsp;each&nbsp;window.<br>
+&nbsp;<br>
+Contributors:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Majed&nbsp;JABER<br>
+&nbsp;<br>
+Project&nbsp;started&nbsp;on:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;11/10/2022</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="pandas.html">pandas</a><br>
+</td><td class="multicolumn"></td><td class="multicolumn"></td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-time_series_extractor"><strong>time_series_extractor</strong></a>(df, stime, time_unit, features_list, sortby_list, groupby_list, aggregation_dict)</dt><dd><span class="code">Convert&nbsp;raw&nbsp;data&nbsp;into&nbsp;a&nbsp;time&nbsp;series&nbsp;format&nbsp;by&nbsp;grouping&nbsp;and&nbsp;aggregating&nbsp;specified&nbsp;features.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+:param&nbsp;df:&nbsp;pd.DataFrame&nbsp;-&nbsp;The&nbsp;input&nbsp;dataframe&nbsp;containing&nbsp;raw&nbsp;network&nbsp;data.<br>
+:param&nbsp;features_list:&nbsp;list&nbsp;-&nbsp;The&nbsp;list&nbsp;of&nbsp;features&nbsp;to&nbsp;extract&nbsp;and&nbsp;transform.<br>
+:param&nbsp;sortby_list:&nbsp;list&nbsp;-&nbsp;The&nbsp;list&nbsp;of&nbsp;columns&nbsp;to&nbsp;sort&nbsp;by.<br>
+:param&nbsp;groupby_list:&nbsp;list&nbsp;-&nbsp;The&nbsp;list&nbsp;of&nbsp;columns&nbsp;to&nbsp;group&nbsp;by.<br>
+:param&nbsp;aggregation_dict:&nbsp;dict&nbsp;-&nbsp;A&nbsp;dictionary&nbsp;specifying&nbsp;the&nbsp;aggregation&nbsp;operations&nbsp;for&nbsp;each&nbsp;feature.<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+pd.DataFrame&nbsp;-&nbsp;The&nbsp;transformed&nbsp;dataframe&nbsp;in&nbsp;time&nbsp;series&nbsp;format.</span></dd></dl>
+</td></tr></table>
+</body></html>
