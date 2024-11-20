@@ -532,7 +532,7 @@ def chunk_read_and_insert_gc_metrics(file_name, output_csv, time_interval, heade
 
 
 def insert_metrics_to_dataframe(dataframe, time_interval, date_time, edge_source, edge_dest, label, name,
-                                date_timestamp, community_strategy='louvain'):
+                                date_timestamp, community_strategy='louvain',continuity=True):
     """
     Take a dataframe, represent it on dynamic graph and compute community metrics.
 
@@ -550,6 +550,7 @@ def insert_metrics_to_dataframe(dataframe, time_interval, date_time, edge_source
     :param label: Name of the target column in dataframe as str
     :param name: name to attach to new column
     :param date_timestamp: True or False if date column type is already timestamp
+    :param continuity: True of False if dataset has continuity in his timestamp
     """
     if not isinstance(edge_source, list) or not isinstance(edge_dest, list):
         print('edge vertice have to be given as list')
@@ -692,6 +693,10 @@ def insert_metrics_to_dataframe(dataframe, time_interval, date_time, edge_source
     nx.set_node_attributes(MG, partition, "community")
 
     current_stop = current_stop + time_interval
+    if continuity == False: # check if a hole is encountered in the data
+        if dataframe[date_time][count] > first + current_stop:
+            current_stop = time_interval
+            first = dataframe[date_time][count]
 
     forder_metrics_c, forder_metrics_g = gc.gc_metrics_first_order(MG)
     center = forder_metrics_c['center']
@@ -823,6 +828,10 @@ def insert_metrics_to_dataframe(dataframe, time_interval, date_time, edge_source
                 partition2 = community_louvain.best_partition(MG2)
 
             current_stop = current_stop + time_interval
+            if continuity == False: # check if a hole is encountered in the data
+                if dataframe[date_time][count] > first + current_stop:
+                    current_stop = time_interval
+                    first = dataframe[date_time][count]
             nx.set_node_attributes(MG2, partition2, "community")
 
             forder_metrics_c, forder_metrics_g = gc.gc_metrics_first_order(MG2)
