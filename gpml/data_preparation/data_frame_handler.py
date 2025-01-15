@@ -693,11 +693,13 @@ def insert_metrics_to_dataframe(dataframe, time_interval, date_time, edge_source
     nx.set_node_attributes(MG, partition, "community")
 
     current_stop = current_stop + time_interval
-    if continuity == False: # check if a hole is encountered in the data
+    if continuity is False: # check if a hole is encountered in the data
         if dataframe[date_time][count] > first + current_stop:
             current_stop = time_interval
             first = dataframe[date_time][count]
-
+    else: # if a hole is encountered but continuity is supposed to be true
+        if dataframe[date_time][count] > first + current_stop:
+            sys.exit("Continuity is set to True, but dataset doesn't have time continuity")
     forder_metrics_c, forder_metrics_g = gc.gc_metrics_first_order(MG)
     center = forder_metrics_c['center']
     so_metrics_c, so_metrics_g = gc.gc_metrics_second_order(forder_metrics_c, forder_metrics_g)
@@ -828,10 +830,14 @@ def insert_metrics_to_dataframe(dataframe, time_interval, date_time, edge_source
                 partition2 = community_louvain.best_partition(MG2)
 
             current_stop = current_stop + time_interval
-            if continuity == False: # check if a hole is encountered in the data
+            if continuity is False: # check if a hole is encountered in the data
                 if dataframe[date_time][count] > first + current_stop:
                     current_stop = time_interval
                     first = dataframe[date_time][count]
+            else: # if a hole is encountered but continuity is supposed to be true
+                if dataframe[date_time][count] > first + current_stop:
+                    sys.exit("Continuity is set to True, but dataset doesn't have time continuity")
+
             nx.set_node_attributes(MG2, partition2, "community")
 
             forder_metrics_c, forder_metrics_g = gc.gc_metrics_first_order(MG2)
