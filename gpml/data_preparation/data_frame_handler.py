@@ -532,7 +532,7 @@ def chunk_read_and_insert_gc_metrics(file_name, output_csv, time_interval, heade
 
 
 def insert_metrics_to_dataframe(dataframe, time_interval, date_time, edge_source, edge_dest, label, name,
-                                date_timestamp, community_strategy='louvain',continuity=True):
+                                community_strategy='louvain',continuity=True):
     """
     Take a dataframe, represent it on dynamic graph and compute community metrics.
 
@@ -549,15 +549,16 @@ def insert_metrics_to_dataframe(dataframe, time_interval, date_time, edge_source
     :param edge_dest: Name of field in dataframe for edge destination id as list
     :param label: Name of the target column in dataframe as str
     :param name: name to attach to new column
-    :param date_timestamp: True or False if date column type is already timestamp
     :param continuity: True of False if dataset has continuity in his timestamp
     """
     if not isinstance(edge_source, list) or not isinstance(edge_dest, list):
         print('edge vertice have to be given as list')
         return dataframe
 
-    if not date_timestamp:
+    try:
         dataframe[date_time] = dataframe[date_time].apply(lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M:%S'))
+    except Exception:
+        pass
     # sort dataframe by date to make the time interval selection
     dataframe = dataframe.sort_values(date_time)
     # get the first date
