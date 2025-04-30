@@ -2,16 +2,18 @@
 This module provides functions to visualize graphs using Networkx library.
 
 Contributors:
-    Julien MICHEL
+    Julien MICHEL, Pierre Parrend, Amani Abou-Rida
 
 Project started on:
     11/10/2022
 """
 # contributors: Pierre Parrend, Amani Abou-Rida
 # project started on 11/10/2022
+import sys
 
 import networkx as nx
 import matplotlib.pyplot as plt
+from IPython import get_ipython
 from pyvis.network import Network
 
 
@@ -149,6 +151,20 @@ def print_graph(dataset, graph_type, label, src_addr, dst_addr, sport=0, dport=0
     :param label: label of the attack
     :param graph_type: type of graph we need to show (ip, ip + proto, or ip + mac)
     """
+
+    def is_online_notebook():
+        try:
+            shell = get_ipython().__class__.__name__
+            if 'google.colab' in str(sys.modules) or 'ZMQInteractiveShell' in shell:
+                return True
+        except NameError:
+            return False
+        return False
+
+    if is_online_notebook():
+        print("Warning: You appear to be running this in an online notebook environment.")
+        print("`show_graph_as_html()` may not function correctly if it requires localhost access.")
+
     connectivity_graph, _attack_list, _attack_labels = extract_graph(dataset, graph_type, label, src_addr,
                                                                    dst_addr, sport, dport, src_mac, dst_mac)
     show_graph(connectivity_graph)
