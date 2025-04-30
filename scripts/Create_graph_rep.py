@@ -21,7 +21,7 @@ import pandas as pd
 
 df = pd.read_csv('data/unsw_nb15/Unsw_example700k.csv',skiprows = lambda x : x%100 != 0)
 
-print_graph(df,'ip', '48', 'Source IP', 'Destination IP',url = './graph_representation',title='Unsw_7k',attack_name='Diverse attacks' ,src_port='Source Port', dst_port='Destination Port', src_mac=0, dst_mac=0)
+print_graph(df,'ip', '48', 'Source IP', 'Destination IP',url = './graph_representation',title='Unsw_7k',attack_name='Diverse attacks' ,sport='Source Port', dport='Destination Port', src_mac=0, dst_mac=0)
 
 #df = pd.read_csv('data/wustl_ehmls/wustl-ehmls-2020_excerpt_long.csv')
 #df['Label'] = df['Label'].replace(['Background',' '],0)

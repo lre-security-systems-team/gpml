@@ -1,36 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<title>Python: module graph_community</title>
-</head><body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module graph_community</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
 
-<table class="heading">
-<tr class="heading-text decor">
-<td class="title">&nbsp;<br><strong class="title">graph_community</strong></td>
-<td class="extra"><a href=".">index</a><br><a href="file:../gpml/metrics/graph_community.py">../gpml/metrics/graph_community.py</a></td></tr></table>
-    <p><span class="code">This&nbsp;module&nbsp;provides&nbsp;all&nbsp;functions&nbsp;related&nbsp;to&nbsp;community&nbsp;graphs.<br>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>graph_community</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/mnt/c/Users/julce/git_repo/gpml/gpml/metrics/graph_community.py">/mnt/c/Users/julce/git_repo/gpml/gpml/metrics/graph_community.py</a></font></td></tr></table>
+    <p><tt>This&nbsp;module&nbsp;provides&nbsp;all&nbsp;functions&nbsp;related&nbsp;to&nbsp;community&nbsp;graphs.<br>
 &nbsp;<br>
 Contributors:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Julien&nbsp;MICHEL<br>
 &nbsp;<br>
 Project&nbsp;started&nbsp;on:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;11/10/2022</span></p>
+&nbsp;&nbsp;&nbsp;&nbsp;11/10/2022</tt></p>
 <p>
-<table class="section">
-<tr class="decor pkg-content-decor heading-text">
-<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
     
-<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
-<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="networkx.html">networkx</a><br>
-</td><td class="multicolumn"><a href="sys.html">sys</a><br>
-</td><td class="multicolumn"></td><td class="multicolumn"></td></tr></table></td></tr></table><p>
-<table class="section">
-<tr class="decor functions-decor heading-text">
-<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="networkx.html">networkx</a><br>
+</td><td width="25%" valign=top><a href="sys.html">sys</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
     
-<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
-<td class="singlecolumn"><dl><dt><a name="-compute_stabilities"><strong>compute_stabilities</strong></a>(g1, g2, nb_of_communities, old_stabilities, t)</dt><dd><span class="code">Compute&nbsp;stabilities&nbsp;between&nbsp;2&nbsp;graph&nbsp;and&nbsp;update&nbsp;global&nbsp;stabilities&nbsp;if&nbsp;there&nbsp;is&nbsp;a&nbsp;need&nbsp;to.<br>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-compute_stabilities"><strong>compute_stabilities</strong></a>(g1, g2, nb_of_communities, old_stabilities, t)</dt><dd><tt>Compute&nbsp;stabilities&nbsp;between&nbsp;2&nbsp;graph&nbsp;and&nbsp;update&nbsp;global&nbsp;stabilities&nbsp;if&nbsp;there&nbsp;is&nbsp;a&nbsp;need&nbsp;to.<br>
 &nbsp;<br>
 Returns<br>
 -------<br>
@@ -42,8 +44,8 @@ Parameters<br>
 :param&nbsp;g2:&nbsp;networkx&nbsp;multigraph<br>
 :param&nbsp;nb_of_communities:&nbsp;int<br>
 :param&nbsp;old_stabilities:&nbsp;float&nbsp;List<br>
-:t:&nbsp;int</span></dd></dl>
- <dl><dt><a name="-gc_metrics"><strong>gc_metrics</strong></a>(G, partition)</dt><dd><span class="code">Compute&nbsp;different&nbsp;graph&nbsp;community&nbsp;metrics.<br>
+:t:&nbsp;int</tt></dd></dl>
+ <dl><dt><a name="-gc_metrics"><strong>gc_metrics</strong></a>(G, partition)</dt><dd><tt>Compute&nbsp;different&nbsp;graph&nbsp;community&nbsp;metrics.<br>
 &nbsp;<br>
 Return`s<br>
 -------<br>
@@ -52,8 +54,8 @@ List&nbsp;of&nbsp;the&nbsp;different&nbsp;calculated&nbsp;graph&nbsp;community&n
 Parameters<br>
 ----------<br>
 :param&nbsp;G:&nbsp;networkx&nbsp;&nbsp;multigraph<br>
-:param&nbsp;partition:&nbsp;a&nbsp;community&nbsp;partition&nbsp;of&nbsp;G</span></dd></dl>
- <dl><dt><a name="-gc_metrics_first_order"><strong>gc_metrics_first_order</strong></a>(G)</dt><dd><span class="code">Compute&nbsp;different&nbsp;graph&nbsp;and&nbsp;graph&nbsp;community&nbsp;metrics&nbsp;of&nbsp;first&nbsp;order.<br>
+:param&nbsp;partition:&nbsp;a&nbsp;community&nbsp;partition&nbsp;of&nbsp;G</tt></dd></dl>
+ <dl><dt><a name="-gc_metrics_first_order"><strong>gc_metrics_first_order</strong></a>(G)</dt><dd><tt>Compute&nbsp;different&nbsp;graph&nbsp;and&nbsp;graph&nbsp;community&nbsp;metrics&nbsp;of&nbsp;first&nbsp;order.<br>
 &nbsp;<br>
 This&nbsp;function&nbsp;calculates&nbsp;metrics&nbsp;by&nbsp;one&nbsp;run&nbsp;over&nbsp;the&nbsp;edges&nbsp;and&nbsp;nodes&nbsp;of&nbsp;the&nbsp;graph<br>
 and&nbsp;does&nbsp;not&nbsp;require&nbsp;the&nbsp;values&nbsp;of&nbsp;other&nbsp;metrics&nbsp;for&nbsp;calculation.<br>
@@ -64,8 +66,8 @@ List&nbsp;of&nbsp;the&nbsp;different&nbsp;calculated&nbsp;graph&nbsp;community&n
 List&nbsp;of&nbsp;the&nbsp;different&nbsp;calculated&nbsp;graph&nbsp;metrics<br>
 Parameters<br>
 ----------<br>
-:param&nbsp;G:&nbsp;networkx&nbsp;&nbsp;multigraph</span></dd></dl>
- <dl><dt><a name="-gc_metrics_second_order"><strong>gc_metrics_second_order</strong></a>(forder_metrics_c, forder_metrics_g)</dt><dd><span class="code">&nbsp;Compute&nbsp;different&nbsp;graph&nbsp;and&nbsp;graph&nbsp;community&nbsp;metrics&nbsp;of&nbsp;second&nbsp;order.<br>
+:param&nbsp;G:&nbsp;networkx&nbsp;&nbsp;multigraph</tt></dd></dl>
+ <dl><dt><a name="-gc_metrics_second_order"><strong>gc_metrics_second_order</strong></a>(forder_metrics_c, forder_metrics_g)</dt><dd><tt>&nbsp;Compute&nbsp;different&nbsp;graph&nbsp;and&nbsp;graph&nbsp;community&nbsp;metrics&nbsp;of&nbsp;second&nbsp;order.<br>
 &nbsp;<br>
 This&nbsp;function&nbsp;calculates&nbsp;metrics&nbsp;by&nbsp;one&nbsp;run&nbsp;over&nbsp;all&nbsp;the&nbsp;first-order&nbsp;metrics<br>
 for&nbsp;a&nbsp;given&nbsp;set&nbsp;of&nbsp;community&nbsp;and&nbsp;a&nbsp;graph.<br>
@@ -76,8 +78,8 @@ List&nbsp;of&nbsp;the&nbsp;different&nbsp;calculated&nbsp;graph&nbsp;metrics<br>
 Parameters<br>
 ----------<br>
 :param&nbsp;forder_metrics_c:&nbsp;community&nbsp;metrics&nbsp;of&nbsp;first&nbsp;order<br>
-:param&nbsp;forder_metrics_g:&nbsp;graph&nbsp;metrics&nbsp;of&nbsp;first&nbsp;order</span></dd></dl>
- <dl><dt><a name="-propagate_communities"><strong>propagate_communities</strong></a>(g1, g2, center, center_t)</dt><dd><span class="code">Propagate&nbsp;stabilities&nbsp;from&nbsp;g1&nbsp;to&nbsp;g2.<br>
+:param&nbsp;forder_metrics_g:&nbsp;graph&nbsp;metrics&nbsp;of&nbsp;first&nbsp;order</tt></dd></dl>
+ <dl><dt><a name="-propagate_communities"><strong>propagate_communities</strong></a>(g1, g2, center, center_t)</dt><dd><tt>Propagate&nbsp;stabilities&nbsp;from&nbsp;g1&nbsp;to&nbsp;g2.<br>
 &nbsp;<br>
 Returns<br>
 -------<br>
@@ -88,6 +90,6 @@ Parameters<br>
 :param&nbsp;g1:&nbsp;networkx&nbsp;multigraph<br>
 :param&nbsp;g2:&nbsp;networkx&nbsp;multigraph<br>
 :param&nbsp;center:&nbsp;Nodes&nbsp;id&nbsp;list<br>
-:param&nbsp;center_t:&nbsp;Nodes&nbsp;id&nbsp;list</span></dd></dl>
+:param&nbsp;center_t:&nbsp;Nodes&nbsp;id&nbsp;list</tt></dd></dl>
 </td></tr></table>
 </body></html>

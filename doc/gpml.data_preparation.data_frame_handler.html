@@ -1,15 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<title>Python: module data_frame_handler</title>
-</head><body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module data_frame_handler</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
 
-<table class="heading">
-<tr class="heading-text decor">
-<td class="title">&nbsp;<br><strong class="title">data_frame_handler</strong></td>
-<td class="extra"><a href=".">index</a><br><a href="file:../gpml/data_preparation/data_frame_handler.py">../gpml/data_preparation/data_frame_handler.py</a></td></tr></table>
-    <p><span class="code">This&nbsp;module&nbsp;provides&nbsp;functionalities&nbsp;for&nbsp;analyzing&nbsp;and&nbsp;computing&nbsp;network&nbsp;community&nbsp;metrics&nbsp;over&nbsp;dynamic&nbsp;graphs.<br>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>data_frame_handler</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/mnt/c/Users/julce/git_repo/gpml/gpml/data_preparation/data_frame_handler.py">/mnt/c/Users/julce/git_repo/gpml/gpml/data_preparation/data_frame_handler.py</a></font></td></tr></table>
+    <p><tt>This&nbsp;module&nbsp;provides&nbsp;functionalities&nbsp;for&nbsp;analyzing&nbsp;and&nbsp;computing&nbsp;network&nbsp;community&nbsp;metrics&nbsp;over&nbsp;dynamic&nbsp;graphs.<br>
 &nbsp;<br>
 It&nbsp;includes&nbsp;functions&nbsp;to&nbsp;process&nbsp;graphs&nbsp;based&nbsp;on&nbsp;data&nbsp;read&nbsp;from&nbsp;CSV&nbsp;files,&nbsp;compute&nbsp;various<br>
 1rst&nbsp;and&nbsp;2nd&nbsp;order&nbsp;community&nbsp;metrics,&nbsp;and&nbsp;incorporate&nbsp;those&nbsp;metrics&nbsp;back&nbsp;into&nbsp;the&nbsp;data<br>
@@ -27,29 +27,31 @@ Contributors:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Julien&nbsp;MICHEL<br>
 &nbsp;<br>
 Project&nbsp;started&nbsp;on:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;11/10/2022</span></p>
+&nbsp;&nbsp;&nbsp;&nbsp;11/10/2022</tt></p>
 <p>
-<table class="section">
-<tr class="decor pkg-content-decor heading-text">
-<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
     
-<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
-<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="library.community.community_louvain.html">library.community.community_louvain</a><br>
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="library.community.community_louvain.html">library.community.community_louvain</a><br>
 <a href="gpml.metrics.graph_community.html">gpml.metrics.graph_community</a><br>
 <a href="igraph.html">igraph</a><br>
-</td><td class="multicolumn"><a href="itertools.html">itertools</a><br>
+</td><td width="25%" valign=top><a href="itertools.html">itertools</a><br>
 <a href="networkx.html">networkx</a><br>
 <a href="networkx.algorithms.community.html">networkx.algorithms.community</a><br>
-</td><td class="multicolumn"><a href="pandas.html">pandas</a><br>
+</td><td width="25%" valign=top><a href="pandas.html">pandas</a><br>
 <a href="sys.html">sys</a><br>
 <a href="time.html">time</a><br>
-</td><td class="multicolumn"></td></tr></table></td></tr></table><p>
-<table class="section">
-<tr class="decor functions-decor heading-text">
-<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
     
-<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
-<td class="singlecolumn"><dl><dt><a name="-chunk_read_and_insert_gc_metrics"><strong>chunk_read_and_insert_gc_metrics</strong></a>(file_name, output_csv, time_interval, header=None, community_strategy='louvain', chunksize=5000000, date_time='Date time', edge_source=None, edge_dest=None, label='Label', name='default')</dt><dd><span class="code">Use&nbsp;pandas&nbsp;to&nbsp;read&nbsp;a&nbsp;csv&nbsp;by&nbsp;chunk&nbsp;and&nbsp;write&nbsp;another&nbsp;csv&nbsp;with&nbsp;the&nbsp;same&nbsp;field&nbsp;+&nbsp;graph&nbsp;communities&nbsp;metrics.<br>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-chunk_read_and_insert_gc_metrics"><strong>chunk_read_and_insert_gc_metrics</strong></a>(file_name, output_csv, time_interval, header=None, community_strategy='louvain', chunksize=5000000, date_time='Date time', edge_source=None, edge_dest=None, label='Label', name='default')</dt><dd><tt>Use&nbsp;pandas&nbsp;to&nbsp;read&nbsp;a&nbsp;csv&nbsp;by&nbsp;chunk&nbsp;and&nbsp;write&nbsp;another&nbsp;csv&nbsp;with&nbsp;the&nbsp;same&nbsp;field&nbsp;+&nbsp;graph&nbsp;communities&nbsp;metrics.<br>
 &nbsp;<br>
 Returns<br>
 -------<br>
@@ -66,8 +68,8 @@ Parameters<br>
 :param&nbsp;edge_source:&nbsp;Name&nbsp;of&nbsp;field&nbsp;in&nbsp;csv&nbsp;for&nbsp;edge&nbsp;source&nbsp;id&nbsp;as&nbsp;list<br>
 :param&nbsp;edge_dest:&nbsp;Name&nbsp;of&nbsp;field&nbsp;in&nbsp;csv&nbsp;for&nbsp;edge&nbsp;destination&nbsp;id&nbsp;as&nbsp;list<br>
 :param&nbsp;label:&nbsp;Name&nbsp;of&nbsp;the&nbsp;label&nbsp;filed&nbsp;in&nbsp;csv<br>
-:param&nbsp;name:&nbsp;naming&nbsp;suffix&nbsp;for&nbsp;metrics</span></dd></dl>
- <dl><dt><a name="-insert_metrics_to_dataframe"><strong>insert_metrics_to_dataframe</strong></a>(dataframe, time_interval, date_time, edge_source, edge_dest, label, name, date_timestamp, community_strategy='louvain')</dt><dd><span class="code">Take&nbsp;a&nbsp;dataframe,&nbsp;represent&nbsp;it&nbsp;on&nbsp;dynamic&nbsp;graph&nbsp;and&nbsp;compute&nbsp;community&nbsp;metrics.<br>
+:param&nbsp;name:&nbsp;naming&nbsp;suffix&nbsp;for&nbsp;metrics</tt></dd></dl>
+ <dl><dt><a name="-insert_metrics_to_dataframe"><strong>insert_metrics_to_dataframe</strong></a>(dataframe, time_interval, date_time, edge_source, edge_dest, label, name, community_strategy='louvain', continuity=True)</dt><dd><tt>Take&nbsp;a&nbsp;dataframe,&nbsp;represent&nbsp;it&nbsp;on&nbsp;dynamic&nbsp;graph&nbsp;and&nbsp;compute&nbsp;community&nbsp;metrics.<br>
 &nbsp;<br>
 Returns<br>
 -------<br>
@@ -82,8 +84,8 @@ Parameters<br>
 :param&nbsp;edge_dest:&nbsp;Name&nbsp;of&nbsp;field&nbsp;in&nbsp;dataframe&nbsp;for&nbsp;edge&nbsp;destination&nbsp;id&nbsp;as&nbsp;list<br>
 :param&nbsp;label:&nbsp;Name&nbsp;of&nbsp;the&nbsp;target&nbsp;column&nbsp;in&nbsp;dataframe&nbsp;as&nbsp;str<br>
 :param&nbsp;name:&nbsp;name&nbsp;to&nbsp;attach&nbsp;to&nbsp;new&nbsp;column<br>
-:param&nbsp;date_timestamp:&nbsp;True&nbsp;or&nbsp;False&nbsp;if&nbsp;date&nbsp;column&nbsp;type&nbsp;is&nbsp;already&nbsp;timestamp</span></dd></dl>
- <dl><dt><a name="-nested_insert_metrics_to_dataframe"><strong>nested_insert_metrics_to_dataframe</strong></a>(dataframe, time_interval, date_time, edge_source, edge_dest, label, name, date_timestamp, community_strategy='louvain', time_0=0, buffer_graph=None)</dt><dd><span class="code">Take&nbsp;a&nbsp;dataframe,&nbsp;represent&nbsp;it&nbsp;on&nbsp;dynamic&nbsp;graph&nbsp;and&nbsp;compute&nbsp;community&nbsp;metrics.<br>
+:param&nbsp;continuity:&nbsp;True&nbsp;of&nbsp;False&nbsp;if&nbsp;dataset&nbsp;has&nbsp;continuity&nbsp;in&nbsp;his&nbsp;timestamp</tt></dd></dl>
+ <dl><dt><a name="-nested_insert_metrics_to_dataframe"><strong>nested_insert_metrics_to_dataframe</strong></a>(dataframe, time_interval, date_time, edge_source, edge_dest, label, name, date_timestamp, community_strategy='louvain', time_0=0, buffer_graph=None)</dt><dd><tt>Take&nbsp;a&nbsp;dataframe,&nbsp;represent&nbsp;it&nbsp;on&nbsp;dynamic&nbsp;graph&nbsp;and&nbsp;compute&nbsp;community&nbsp;metrics.<br>
 &nbsp;<br>
 Returns<br>
 -------<br>
@@ -99,6 +101,6 @@ Parameters<br>
 :param&nbsp;label:&nbsp;Name&nbsp;of&nbsp;the&nbsp;target&nbsp;column&nbsp;in&nbsp;dataframe&nbsp;as&nbsp;str<br>
 :param&nbsp;name:&nbsp;name&nbsp;to&nbsp;attach&nbsp;to&nbsp;new&nbsp;column<br>
 :param&nbsp;date_timestamp:&nbsp;True&nbsp;or&nbsp;False&nbsp;if&nbsp;date&nbsp;column&nbsp;type&nbsp;is&nbsp;already&nbsp;timestamp<br>
-:param&nbsp;buffer_graph:&nbsp;None&nbsp;if&nbsp;first&nbsp;chunk,&nbsp;last&nbsp;graph&nbsp;otherwise</span></dd></dl>
+:param&nbsp;buffer_graph:&nbsp;None&nbsp;if&nbsp;first&nbsp;chunk,&nbsp;last&nbsp;graph&nbsp;otherwise</tt></dd></dl>
 </td></tr></table>
 </body></html>

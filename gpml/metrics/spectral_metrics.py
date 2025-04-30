@@ -22,6 +22,7 @@ import numpy as np
 import pandas as pd
 import networkx as nx
 
+
 # from gpml.data_preparation.time_series_extractor import time_series_extractor
 
 
@@ -151,7 +152,8 @@ def get_first_value(series):
     return series.iloc[0]
 
 
-def spectral_metrics_extractor(ts, stime, saddr, daddr, pkts, bytes_size, rate, lbl_category):
+def spectral_metrics_extractor(ts, stime, saddr, daddr, pkts='', bytes_size='', rate='', lbl_category='',
+                               src_pkts='', dst_pkts='', src_bytes='', dst_bytes='', duration=''):
     """
     Apply time windowing techniques on the time series data, computing various spectral metrics for each window.
 
@@ -165,16 +167,28 @@ def spectral_metrics_extractor(ts, stime, saddr, daddr, pkts, bytes_size, rate, 
     :param bytes: str - The name of the bytes column in the dataframe.
     :param rate: str - The name of the rate column in the dataframe.
     :param lbl_category: str - The name of the label category column in the dataframe.
+    :param src_pkts: str - Optional. The name of the source packets column. Defaults to an empty string if not provided.
+    :param dst_pkts: str - Optional. The name of the destination packets column. Defaults to an empty string if not provided.
+    :param src_bytes: str - Optional. The name of the source bytes column. Defaults to an empty string if not provided.
+    :param dst_bytes: str - Optional. The name of the destination bytes column. Defaults to an empty string if not provided.
+    :param duration: str - Optional. The name of the destination duration column. Defaults to an empty string if not provided.
 
     Returns
     -------
     pd.DataFrame - The transformed dataframe with computed spectral metrics for each time window.
 
-    Args:
-        bytes_size:
-        bytes_size:
     """
     df = ts.copy()
+
+    if pkts not in df.columns and src_pkts in df.columns and dst_pkts in df.columns:
+        df[pkts] = df[src_pkts] + df[dst_pkts]
+
+    if bytes_size not in df.columns and src_bytes in df.columns and dst_bytes in df.columns:
+        df[bytes_size] = df[src_bytes] + df[dst_bytes]
+
+    if rate not in df.columns and pkts in df.columns and duration in df.columns:
+        df[rate] = df[pkts] / df[duration]
+
     df_topredict = pd.DataFrame()
 
     df['next_stime'] = df[stime] + 60
@@ -296,7 +310,6 @@ def spectral_metrics_extractor(ts, stime, saddr, daddr, pkts, bytes_size, rate, 
             # Concatenate the list of dictionaries into a new DataFrame
             df_topredict = pd.concat([df_topredict, agg_row], ignore_index=True)
     return df_topredict
-
 
 # def spectral_analysis_pipeline(df, stime, time_unit, features_list, sortby_list, groupby_list, aggregation_dict,
 #                               saddr, daddr, pkts, bytes_size, rate, lbl_category):

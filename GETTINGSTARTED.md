@@ -9,23 +9,12 @@ transforming network traffic data through graph representations.
 
 ![Alt text](images/community_graph_flow.png 'community graph analysis process')
 
-### Analysis process
-
-This module provides you an extraction function for graph community metrics from csv or dataframe.
-This process contains multiple steps listed below:
-
-- Reading raw data of traffic logs and importing it into dataframe.
-- Apply time-windowing on data where at each time-window:
-  - Extract connectivity multigraph MG
-  - Compute the community metrics
-  - Propagate communities from previous MG
-  - Store current MG
-- As a result, a dataframe containing static and dynamic graph community metrics is obtained.
-
 ### Graph Definition - Communities
 
 For graph analysis with community metrics, connectivity graphs represent
-network relationships with nodes and edges. Nodes can symbolize device addresses, ports or couples of both while undirected edges denote communication links between two nodes. Each edges represent a single message and multiple edges can exist between two nodes.
+network relationships with nodes and edges. Nodes symbolize device addresses,
+while undirected edges denote communication links between two nodes.
+They are unweighted.
 
 ### Graph and Metrics Extraction
 

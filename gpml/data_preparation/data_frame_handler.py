@@ -10,7 +10,7 @@ for dynamic graph analysis.
 Functions:
     chunk_read_and_insert_gc_metrics - Processes chunks of CSV data to compute community metrics
     and outputs to a new CSV.
-    insert_metrics_to_dataframe - Computes community metrics for a given dataframe
+    insert_graph_community_metrics - Computes community metrics for a given dataframe
     and updates it with new metrics columns.
 
 Contributors:
@@ -460,9 +460,8 @@ def chunk_read_and_insert_gc_metrics(file_name, output_csv, time_interval, heade
     Parameters
     ----------
     :param file_name: input csv file
-    :param output_csv: output csv file
     :param time_interval: timedelta of graph window
-    :param community_strategy: Name of community strategy
+    :param community_strategy: Nodes id list
     :param chunksize: nb of csv line to load in memory as int
     :param date_time: Name of the date field in csv
     :param edge_source: Name of field in csv for edge source id as list
@@ -517,7 +516,7 @@ def chunk_read_and_insert_gc_metrics(file_name, output_csv, time_interval, heade
                                                                                      date_timestamp=True,
                                                                                      community_strategy=community_strategy,
                                                                                      time_0=1, buffer_graph=(
-                last_multigraph, last_centers))
+                    last_multigraph, last_centers))
         except Exception:
             stop = 1
         df.to_csv(output_csv, index=False, header=False, mode='a')
@@ -531,8 +530,8 @@ def chunk_read_and_insert_gc_metrics(file_name, output_csv, time_interval, heade
     timedf.to_csv("scalability_" + output_csv, index=False)
 
 
-def insert_metrics_to_dataframe(dataframe, time_interval, date_time, edge_source, edge_dest, label, name,
-                                community_strategy='louvain',continuity=True):
+def insert_graph_community_metrics(dataframe, time_interval, date_time, edge_source, edge_dest, label, name,
+                                   date_timestamp, community_strategy='louvain'):
     """
     Take a dataframe, represent it on dynamic graph and compute community metrics.
 
@@ -549,16 +548,14 @@ def insert_metrics_to_dataframe(dataframe, time_interval, date_time, edge_source
     :param edge_dest: Name of field in dataframe for edge destination id as list
     :param label: Name of the target column in dataframe as str
     :param name: name to attach to new column
-    :param continuity: True of False if dataset has continuity in his timestamp
+    :param date_timestamp: True or False if date column type is already timestamp
     """
     if not isinstance(edge_source, list) or not isinstance(edge_dest, list):
         print('edge vertice have to be given as list')
         return dataframe
 
-    try:
+    if not date_timestamp:
         dataframe[date_time] = dataframe[date_time].apply(lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M:%S'))
-    except Exception:
-        pass
     # sort dataframe by date to make the time interval selection
     dataframe = dataframe.sort_values(date_time)
     # get the first date
@@ -694,13 +691,7 @@ def insert_metrics_to_dataframe(dataframe, time_interval, date_time, edge_source
     nx.set_node_attributes(MG, partition, "community")
 
     current_stop = current_stop + time_interval
-    if continuity is False: # check if a hole is encountered in the data
-        if dataframe[date_time][count] > first + current_stop:
-            current_stop = time_interval
-            first = dataframe[date_time][count]
-    else: # if a hole is encountered but continuity is supposed to be true
-        if dataframe[date_time][count] > first + current_stop:
-            sys.exit("Continuity is set to True, but dataset doesn't have time continuity")
+
     forder_metrics_c, forder_metrics_g = gc.gc_metrics_first_order(MG)
     center = forder_metrics_c['center']
     so_metrics_c, so_metrics_g = gc.gc_metrics_second_order(forder_metrics_c, forder_metrics_g)
@@ -831,14 +822,6 @@ def insert_metrics_to_dataframe(dataframe, time_interval, date_time, edge_source
                 partition2 = community_louvain.best_partition(MG2)
 
             current_stop = current_stop + time_interval
-            if continuity is False: # check if a hole is encountered in the data
-                if dataframe[date_time][count] > first + current_stop:
-                    current_stop = time_interval
-                    first = dataframe[date_time][count]
-            else: # if a hole is encountered but continuity is supposed to be true
-                if dataframe[date_time][count] > first + current_stop:
-                    sys.exit("Continuity is set to True, but dataset doesn't have time continuity")
-
             nx.set_node_attributes(MG2, partition2, "community")
 
             forder_metrics_c, forder_metrics_g = gc.gc_metrics_first_order(MG2)
