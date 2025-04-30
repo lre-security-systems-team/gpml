@@ -1,0 +1,284 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>gpml.visualisation.plot &mdash; gpml 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            gpml
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../gpml.html">gpml package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">gpml</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">gpml.visualisation.plot</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for gpml.visualisation.plot</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module provides functions to plot graphs.</span>
+
+<span class="sd">Contributors:</span>
+<span class="sd">    Julien MICHEL</span>
+
+<span class="sd">Project started on:</span>
+<span class="sd">    11/10/2022</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+
+
+<div class="viewcode-block" id="plot_importance">
+<a class="viewcode-back" href="../../../gpml.visualisation.html#gpml.visualisation.plot.plot_importance">[docs]</a>
+<span class="k">def</span> <span class="nf">plot_importance</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">file_name_plot</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate bar plots for feature importances based on the specified metric.</span>
+
+<span class="sd">    This function generates bar plots for the feature importances based on the specified</span>
+<span class="sd">    metric (&#39;gain&#39;, &#39;weight&#39;, &#39;cover&#39;, or &#39;all&#39;). It supports plotting multiple types of</span>
+<span class="sd">    importances if &#39;all&#39; is specified. Each plot is displayed and saved as a PNG file.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - clf (classifier): The classifier from which to get the feature importances. The</span>
+<span class="sd">      classifier should have the `feature_names_in_` attribute and methods like</span>
+<span class="sd">      `get_booster().get_score()`.</span>
+<span class="sd">    - file_name_plot (str): The base name for the output plot files. This string is used</span>
+<span class="sd">      to generate filenames for each plot.</span>
+<span class="sd">    - metric (str, optional): The type of importance to plot. Valid options are &#39;gain&#39;,</span>
+<span class="sd">      &#39;weight&#39;, &#39;cover&#39;, or &#39;all&#39;. Default is &#39;all&#39;.</span>
+
+<span class="sd">    Outputs:</span>
+<span class="sd">    - PNG files: For each specified type of importance, a PNG file is saved in the &#39;fig/&#39;</span>
+<span class="sd">      directory. The filenames are constructed using the base name provided and the type</span>
+<span class="sd">      of metric.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">importance</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="n">importance</span><span class="p">[</span><span class="s1">&#39;Features&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">feature_names_in_</span>
+
+    <span class="k">if</span> <span class="n">metric</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="s1">&#39;gain&#39;</span><span class="p">)</span> <span class="p">:</span>
+        <span class="n">importance</span><span class="p">[</span><span class="s1">&#39;Gain&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">feature_importances_</span>
+        <span class="n">importance</span> <span class="o">=</span> <span class="n">importance</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Gain&#39;</span><span class="p">],</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">importance</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;Gain&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;Features&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Features&#39;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;h&#39;</span><span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">update_yaxes</span><span class="p">(</span><span class="n">categoryorder</span><span class="o">=</span><span class="s2">&quot;total ascending&quot;</span><span class="p">)</span>
+
+        <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="s2">&quot;fig/importance_gain_&quot;</span> <span class="o">+</span> <span class="n">file_name_plot</span> <span class="o">+</span> <span class="s2">&quot;.png&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">metric</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">)</span> <span class="p">:</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">get_booster</span><span class="p">()</span><span class="o">.</span><span class="n">get_score</span><span class="p">(</span><span class="n">importance_type</span><span class="o">=</span><span class="s1">&#39;weight&#39;</span><span class="p">)</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">elm</span> <span class="ow">in</span> <span class="n">importance</span><span class="p">[</span><span class="s1">&#39;Features&#39;</span><span class="p">]:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">w</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="n">elm</span><span class="p">])</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="n">w</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">importance</span><span class="p">[</span><span class="s1">&#39;Weight&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">w</span>
+        <span class="n">importance</span> <span class="o">=</span> <span class="n">importance</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Weight&#39;</span><span class="p">],</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">importance</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;Weight&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;Features&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Features&#39;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;h&#39;</span><span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">update_yaxes</span><span class="p">(</span><span class="n">categoryorder</span><span class="o">=</span><span class="s2">&quot;total ascending&quot;</span><span class="p">)</span>
+
+        <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="s2">&quot;fig/importance_weight_&quot;</span> <span class="o">+</span> <span class="n">file_name_plot</span> <span class="o">+</span> <span class="s2">&quot;.png&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">metric</span> <span class="p">(</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="s1">&#39;cover&#39;</span><span class="p">)</span> <span class="p">:</span>
+        <span class="n">coverages</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">get_booster</span><span class="p">()</span><span class="o">.</span><span class="n">get_score</span><span class="p">(</span><span class="n">importance_type</span><span class="o">=</span><span class="s1">&#39;cover&#39;</span><span class="p">)</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">elm</span> <span class="ow">in</span> <span class="n">importance</span><span class="p">[</span><span class="s1">&#39;Features&#39;</span><span class="p">]:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">c</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coverages</span><span class="p">[</span><span class="n">elm</span><span class="p">])</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="n">c</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">importance</span><span class="p">[</span><span class="s1">&#39;Coverage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span>
+        <span class="n">importance</span> <span class="o">=</span> <span class="n">importance</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Coverage&#39;</span><span class="p">],</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">importance</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;Coverage&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;Features&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Features&#39;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;h&#39;</span><span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">update_yaxes</span><span class="p">(</span><span class="n">categoryorder</span><span class="o">=</span><span class="s2">&quot;total ascending&quot;</span><span class="p">)</span>
+
+        <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="s2">&quot;fig/importance_coverage_&quot;</span> <span class="o">+</span> <span class="n">file_name_plot</span> <span class="o">+</span> <span class="s2">&quot;.png&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="plot_features">
+<a class="viewcode-back" href="../../../gpml.visualisation.html#gpml.visualisation.plot.plot_features">[docs]</a>
+<span class="k">def</span> <span class="nf">plot_features</span><span class="p">(</span><span class="n">plot_data</span><span class="p">,</span> <span class="n">x_feature</span><span class="p">,</span> <span class="n">y_feature</span><span class="p">,</span> <span class="n">z_feature</span><span class="p">,</span> <span class="n">target_label</span><span class="p">,</span> <span class="n">normal_cat</span><span class="p">,</span> <span class="n">file_name_plot</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create and save a 3D scatter plot of features from the provided dataset.</span>
+
+<span class="sd">    This function visualizes the relationship between three features (x, y, z) in a 3D space</span>
+<span class="sd">    with different colors indicating different categories as specified by the &#39;target_label&#39;.</span>
+<span class="sd">    Points representing the &#39;normal_cat&#39; category are colored blue, and other categories are</span>
+<span class="sd">    colored cyclically from a preset list. The plot is saved as a PNG file.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - plot_data (DataFrame): The data containing the features to be plotted.</span>
+<span class="sd">    - x_feature (str): The name of the column in `plot_data` to be used as the x-axis values.</span>
+<span class="sd">    - y_feature (str): The name of the column in `plot_data` to be used as the y-axis values.</span>
+<span class="sd">    - z_feature (str): The name of the column in `plot_data` to be used as the z-axis values.</span>
+<span class="sd">    - target_label (str): The name of the column in `plot_data` that contains the categorical</span>
+<span class="sd">      data used to differentiate the data points in the plot.</span>
+<span class="sd">    - normal_cat (str): The category within `target_label` that is considered &#39;normal&#39; and</span>
+<span class="sd">      is specially colored blue.</span>
+<span class="sd">    - file_name_plot (str): The base name for the output plot file. The plot is saved with</span>
+<span class="sd">      this name prefixed by &quot;high_gain_features_&quot;.</span>
+
+<span class="sd">    Outputs:</span>
+<span class="sd">    - A PNG file named &quot;high_gain_features_&lt;file_name_plot&gt;.png&quot; saved in the current directory.</span>
+
+<span class="sd">    Example Usage:</span>
+<span class="sd">    plot_features(df, &#39;Feature1&#39;, &#39;Feature2&#39;, &#39;Feature3&#39;, &#39;Category&#39;, &#39;Normal&#39;, &#39;output_plot&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;3d&quot;</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">x_feature</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">y_feature</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="n">z_feature</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;attack classes&quot;</span><span class="p">)</span>
+
+    <span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">]</span>
+    <span class="n">c_index</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">plot_data</span><span class="p">[</span><span class="n">target_label</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
+
+        <span class="n">current</span> <span class="o">=</span> <span class="n">plot_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">plot_data</span><span class="p">[</span><span class="n">target_label</span><span class="p">]</span> <span class="o">==</span> <span class="n">target</span><span class="p">]</span>
+        <span class="n">x_data</span> <span class="o">=</span> <span class="n">current</span><span class="p">[</span><span class="n">x_feature</span><span class="p">]</span>
+        <span class="n">y_data</span> <span class="o">=</span> <span class="n">current</span><span class="p">[</span><span class="n">y_feature</span><span class="p">]</span>
+        <span class="n">z_data</span> <span class="o">=</span> <span class="n">current</span><span class="p">[</span><span class="n">z_feature</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">target</span> <span class="o">==</span> <span class="n">normal_cat</span><span class="p">:</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;b&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="n">c_index</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">c</span><span class="p">)]</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="n">target</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span> <span class="o">+</span> <span class="n">color</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_data</span><span class="p">,</span> <span class="n">y_data</span><span class="p">,</span> <span class="n">z_data</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+        <span class="n">c_index</span> <span class="o">=</span> <span class="n">c_index</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;high_gain_features_&quot;</span> <span class="o">+</span> <span class="n">file_name_plot</span> <span class="o">+</span> <span class="s2">&quot;.png&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="plot_high_gain_features">
+<a class="viewcode-back" href="../../../gpml.visualisation.html#gpml.visualisation.plot.plot_high_gain_features">[docs]</a>
+<span class="k">def</span> <span class="nf">plot_high_gain_features</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">file_name_plot</span><span class="p">,</span> <span class="n">df_numerical_data</span><span class="p">,</span> <span class="n">attack_label</span><span class="p">,</span> <span class="n">targets_labels</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Identify and visualize the top three features with the highest importance from a classifier.</span>
+
+<span class="sd">    This function extracts the three features with the highest importance scores from the</span>
+<span class="sd">    provided classifier, then creates a DataFrame containing these features along with the</span>
+<span class="sd">    attack labels. It then calls `plot_features` to generate and save a 3D visualization.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - clf (classifier): The trained model from which to get the feature importances.</span>
+<span class="sd">    - file_name_plot (str): The base name for the output plot file.</span>
+<span class="sd">    - df_numerical_data (DataFrame): DataFrame containing the numerical features used by</span>
+<span class="sd">      the classifier.</span>
+<span class="sd">    - attack_label (str): The name of the column to be used as the label for coloring the</span>
+<span class="sd">      data points in the plot.</span>
+<span class="sd">    - targets_labels (Series or array-like): Labels corresponding to each row in</span>
+<span class="sd">      `df_numerical_data` to be used for coloring in the plot.</span>
+
+<span class="sd">    Outputs:</span>
+<span class="sd">    - A 3D scatter plot saved as a PNG file, which visualizes the three features with</span>
+<span class="sd">      the highest importance scores and differentiates points by attack categories.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">feature_importances_</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[</span><span class="o">-</span><span class="mi">3</span><span class="p">:][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">x_feature</span> <span class="o">=</span> <span class="n">df_numerical_data</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="n">x</span><span class="p">]</span>
+    <span class="n">y_feature</span> <span class="o">=</span> <span class="n">df_numerical_data</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="n">y</span><span class="p">]</span>
+    <span class="n">z_feature</span> <span class="o">=</span> <span class="n">df_numerical_data</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="n">z</span><span class="p">]</span>
+
+    <span class="n">plot_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="n">plot_data</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">x_feature</span><span class="p">,</span> <span class="n">df_numerical_data</span><span class="p">[</span><span class="n">x_feature</span><span class="p">],</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">plot_data</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">y_feature</span><span class="p">,</span> <span class="n">df_numerical_data</span><span class="p">[</span><span class="n">y_feature</span><span class="p">],</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">plot_data</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">z_feature</span><span class="p">,</span> <span class="n">df_numerical_data</span><span class="p">[</span><span class="n">z_feature</span><span class="p">],</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">plot_data</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">attack_label</span><span class="p">,</span> <span class="n">targets_labels</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>  <span class="c1"># add target</span>
+
+    <span class="n">plot_features</span><span class="p">(</span><span class="n">plot_data</span><span class="p">,</span> <span class="n">x_feature</span><span class="p">,</span> <span class="n">y_feature</span><span class="p">,</span> <span class="n">z_feature</span><span class="p">,</span> <span class="n">attack_label</span><span class="p">,</span> <span class="s1">&#39;Normal&#39;</span><span class="p">,</span> <span class="n">file_name_plot</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Majed Jaber.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

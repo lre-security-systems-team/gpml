@@ -1,0 +1,305 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>gpml.data_preparation package &mdash; gpml 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="gpml.metrics package" href="gpml.metrics.html" />
+    <link rel="prev" title="gpml package" href="gpml.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            gpml
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="gpml.html">gpml package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="gpml.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">gpml.data_preparation package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-gpml.data_preparation.data_frame_handler">gpml.data_preparation.data_frame_handler module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-gpml.data_preparation.graph_extractor">gpml.data_preparation.graph_extractor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-gpml.data_preparation.time_series_extractor">gpml.data_preparation.time_series_extractor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-gpml.data_preparation">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gpml.metrics.html">gpml.metrics package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpml.visualisation.html">gpml.visualisation package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="gpml.html#module-gpml">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">gpml</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="gpml.html">gpml package</a></li>
+      <li class="breadcrumb-item active">gpml.data_preparation package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/gpml.data_preparation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gpml-data-preparation-package">
+<h1>gpml.data_preparation package<a class="headerlink" href="#gpml-data-preparation-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-gpml.data_preparation.data_frame_handler">
+<span id="gpml-data-preparation-data-frame-handler-module"></span><h2>gpml.data_preparation.data_frame_handler module<a class="headerlink" href="#module-gpml.data_preparation.data_frame_handler" title="Link to this heading"></a></h2>
+<p>This module provides functionalities for analyzing and computing network community metrics over dynamic graphs.</p>
+<p>It includes functions to process graphs based on data read from CSV files, compute various
+1rst and 2nd order community metrics, and incorporate those metrics back into the data
+for further analysis.
+The module supports multiplecommunity detection strategies and offers tools
+for dynamic graph analysis.</p>
+<dl class="simple">
+<dt>Functions:</dt><dd><p>chunk_read_and_insert_gc_metrics - Processes chunks of CSV data to compute community metrics
+and outputs to a new CSV.
+insert_graph_community_metrics - Computes community metrics for a given dataframe
+and updates it with new metrics columns.</p>
+</dd>
+<dt>Contributors:</dt><dd><p>Julien MICHEL</p>
+</dd>
+<dt>Project started on:</dt><dd><p>11/10/2022</p>
+</dd>
+</dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="gpml.data_preparation.data_frame_handler.chunk_read_and_insert_gc_metrics">
+<span class="sig-prename descclassname"><span class="pre">gpml.data_preparation.data_frame_handler.</span></span><span class="sig-name descname"><span class="pre">chunk_read_and_insert_gc_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_csv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_interval</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">community_strategy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'louvain'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunksize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5000000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Date</span> <span class="pre">time'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_dest</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Label'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gpml/data_preparation/data_frame_handler.html#chunk_read_and_insert_gc_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gpml.data_preparation.data_frame_handler.chunk_read_and_insert_gc_metrics" title="Link to this definition"></a></dt>
+<dd><p>Use pandas to read a csv by chunk and write another csv with the same field + graph communities metrics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>output csv file with community metrics</p>
+</dd>
+</dl>
+<p>:param :
+:type : param file_name: input csv file
+:param :
+:type : param time_interval: timedelta of graph window
+:param :
+:type : param community_strategy: Nodes id list
+:param :
+:type : param chunksize: nb of csv line to load in memory as int
+:param :
+:type : param date_time: Name of the date field in csv
+:param :
+:type : param edge_source: Name of field in csv for edge source id as list
+:param :
+:type : param edge_dest: Name of field in csv for edge destination id as list
+:param :
+:type : param label: Name of the label filed in csv
+:param :
+:type : param name: naming suffix for metrics</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gpml.data_preparation.data_frame_handler.insert_graph_community_metrics">
+<span class="sig-prename descclassname"><span class="pre">gpml.data_preparation.data_frame_handler.</span></span><span class="sig-name descname"><span class="pre">insert_graph_community_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_interval</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_dest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">community_strategy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'louvain'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gpml/data_preparation/data_frame_handler.html#insert_graph_community_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gpml.data_preparation.data_frame_handler.insert_graph_community_metrics" title="Link to this definition"></a></dt>
+<dd><p>Take a dataframe, represent it on dynamic graph and compute community metrics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>return dataframe with community metrics</p>
+</dd>
+</dl>
+<p>:param :
+:type : param dataframe: pd.DataFrame()
+:param :
+:type : param time_interval: timedelta of graph window
+:param :
+:type : param date_time: Name of the date field in dataframe
+:param :
+:type : param edge_source: Name of field in dataframe for edge source id as list
+:param :
+:type : param edge_dest: Name of field in dataframe for edge destination id as list
+:param :
+:type : param label: Name of the target column in dataframe as str
+:param :
+:type : param name: name to attach to new column
+:param :
+:type : param date_timestamp: True or False if date column type is already timestamp</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gpml.data_preparation.data_frame_handler.nested_insert_metrics_to_dataframe">
+<span class="sig-prename descclassname"><span class="pre">gpml.data_preparation.data_frame_handler.</span></span><span class="sig-name descname"><span class="pre">nested_insert_metrics_to_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_interval</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_dest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">community_strategy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'louvain'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffer_graph</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gpml/data_preparation/data_frame_handler.html#nested_insert_metrics_to_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gpml.data_preparation.data_frame_handler.nested_insert_metrics_to_dataframe" title="Link to this definition"></a></dt>
+<dd><p>Take a dataframe, represent it on dynamic graph and compute community metrics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>return dataframe with community metrics</p>
+</dd>
+</dl>
+<p>:param :
+:type : param dataframe: pd.DataFrame()
+:param :
+:type : param time_interval: timedelta of graph window
+:param :
+:type : param date_time: Name of the date field in dataframe
+:param :
+:type : param edge_source: Name of field in dataframe for edge source id as list
+:param :
+:type : param edge_dest: Name of field in dataframe for edge destination id as list
+:param :
+:type : param label: Name of the target column in dataframe as str
+:param :
+:type : param name: name to attach to new column
+:param :
+:type : param date_timestamp: True or False if date column type is already timestamp
+:param :
+:type : param buffer_graph: None if first chunk, last graph otherwise</p>
+</dd></dl>
+
+</section>
+<section id="module-gpml.data_preparation.graph_extractor">
+<span id="gpml-data-preparation-graph-extractor-module"></span><h2>gpml.data_preparation.graph_extractor module<a class="headerlink" href="#module-gpml.data_preparation.graph_extractor" title="Link to this heading"></a></h2>
+<p>This module provides tools for constructing and analyzing network graphs from CSV.</p>
+<dl class="simple">
+<dt>Contributors:</dt><dd><p>Julien MICHEL</p>
+</dd>
+<dt>Project started on:</dt><dd><p>11/10/2022</p>
+</dd>
+</dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="gpml.data_preparation.graph_extractor.create_static_graph_from_csv">
+<span class="sig-prename descclassname"><span class="pre">gpml.data_preparation.graph_extractor.</span></span><span class="sig-name descname"><span class="pre">create_static_graph_from_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_dest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gpml/data_preparation/graph_extractor.html#create_static_graph_from_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gpml.data_preparation.graph_extractor.create_static_graph_from_csv" title="Link to this definition"></a></dt>
+<dd><p>Take a csv and represent rows as edges of a graph to create the graph representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>return a multigraph representing the chosen csv file</p>
+</dd>
+</dl>
+<p>:param :
+:type : param file_name: Input csv file
+:param :
+:type : param edge_source: Name of field in csv for edge source as list
+:param :
+:type : param edge_dest: Name of field in csv for edge destination as list
+:param :
+:type : param label: Name of the field for label in the csv
+:param :
+:type : param sampling: Percentage of sample taken from csv data</p>
+</dd></dl>
+
+</section>
+<section id="module-gpml.data_preparation.time_series_extractor">
+<span id="gpml-data-preparation-time-series-extractor-module"></span><h2>gpml.data_preparation.time_series_extractor module<a class="headerlink" href="#module-gpml.data_preparation.time_series_extractor" title="Link to this heading"></a></h2>
+<p>This module provides functionalities for analyzing and transforming network traffic data.</p>
+<dl class="simple">
+<dt>Functions:</dt><dd><p>timeseries_transformation - Converts raw data into a time series format by grouping and aggregating specified features.
+extract_spectrum - Constructs a graph from time window data and computes its spectral properties.
+get_first_value - Retrieves the first value in a pandas series.
+timewindow_transformation - Applies time windowing techniques on the time series data, computing various spectral metrics for each window.</p>
+</dd>
+<dt>Contributors:</dt><dd><p>Majed JABER</p>
+</dd>
+<dt>Project started on:</dt><dd><p>11/10/2022</p>
+</dd>
+</dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="gpml.data_preparation.time_series_extractor.time_series_extractor">
+<span class="sig-prename descclassname"><span class="pre">gpml.data_preparation.time_series_extractor.</span></span><span class="sig-name descname"><span class="pre">time_series_extractor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_unit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sortby_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groupby_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aggregation_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gpml/data_preparation/time_series_extractor.html#time_series_extractor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gpml.data_preparation.time_series_extractor.time_series_extractor" title="Link to this definition"></a></dt>
+<dd><p>Convert raw data into a time series format by grouping and aggregating specified features.</p>
+<p>:param :
+:type : param df: pd.DataFrame - The input dataframe containing raw network data.
+:param :
+:type : param features_list: list - The list of features to extract and transform.
+:param :
+:type : param sortby_list: list - The list of columns to sort by.
+:param :
+:type : param groupby_list: list - The list of columns to group by.
+:param :
+:type : param aggregation_dict: dict - A dictionary specifying the aggregation operations for each feature.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame - The transformed dataframe in time series format.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-gpml.data_preparation">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-gpml.data_preparation" title="Link to this heading"></a></h2>
+<p>Module for creating graph and applying the library on pandas dataframes or csv datasets.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="gpml.html" class="btn btn-neutral float-left" title="gpml package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gpml.metrics.html" class="btn btn-neutral float-right" title="gpml.metrics package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Majed Jaber.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
