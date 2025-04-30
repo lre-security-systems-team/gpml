@@ -1,0 +1,528 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>gpml.metrics.graph_community &mdash; gpml 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            gpml
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../gpml.html">gpml package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">gpml</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">gpml.metrics.graph_community</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for gpml.metrics.graph_community</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module provides all functions related to community graphs.</span>
+
+<span class="sd">Contributors:</span>
+<span class="sd">    Julien MICHEL</span>
+
+<span class="sd">Project started on:</span>
+<span class="sd">    11/10/2022</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># contributors: Julien MICHEL</span>
+<span class="c1"># project started on 11/10/2022</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">statistics</span> <span class="kn">import</span> <span class="n">mean</span>
+
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="gc_metrics">
+<a class="viewcode-back" href="../../../gpml.metrics.html#gpml.metrics.graph_community.gc_metrics">[docs]</a>
+<span class="k">def</span> <span class="nf">gc_metrics</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">partition</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute different graph community metrics.</span>
+
+<span class="sd">    Return`s</span>
+<span class="sd">    -------</span>
+<span class="sd">    List of the different calculated graph community metrics</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    :param G: networkx  multigraph</span>
+<span class="sd">    :param partition: a community partition of G</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># pre-conditions</span>
+    <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Graph does not meet the minimum size requirement&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+    <span class="c1"># Initialize all necessary variables</span>
+    <span class="c1"># for coverage</span>
+    <span class="n">indegree</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># indegree of G</span>
+    <span class="n">indegree_c</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># indegree of connexion =/= edges</span>
+    <span class="n">total_c</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># total number of connexion in G</span>
+
+    <span class="c1"># Get the number of community</span>
+    <span class="n">n_community</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">elm</span><span class="p">][</span><span class="s1">&#39;community&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">elm</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># complexity N</span>
+    <span class="n">nb_node_com</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_community</span>
+    <span class="n">center</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_community</span>
+
+    <span class="c1"># Initialise indegree ;</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">set_node_attributes</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;indegree&quot;</span><span class="p">)</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">set_node_attributes</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;outdegree&quot;</span><span class="p">)</span>
+
+    <span class="n">density</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_community</span>
+    <span class="n">fail_density</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_community</span>
+    <span class="n">externality</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_community</span>
+    <span class="n">in_community</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span> <span class="o">*</span> <span class="n">n_community</span>  <span class="c1"># different edges count, total edge count</span>
+    <span class="n">ex_community</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_community</span>  <span class="c1"># total edge count</span>
+
+    <span class="c1"># for modularity</span>
+    <span class="n">partition_size</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">partition</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># for unifiability</span>
+    <span class="n">uni_in</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_community</span>
+    <span class="n">uni_out</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_community</span>
+    <span class="n">uni</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># for isolability</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_community</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_community</span>
+    <span class="n">iso</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_community</span>
+
+    <span class="c1"># Loop over each edge in the graph</span>
+    <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">:</span>
+
+        <span class="c1"># if the edge has both node in the community</span>
+        <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;community&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="s1">&#39;community&#39;</span><span class="p">]:</span>
+
+            <span class="n">indegree</span> <span class="o">=</span> <span class="n">indegree</span> <span class="o">+</span> <span class="mi">1</span>
+
+            <span class="c1"># if the edge is the first repertoried between the two nodes</span>
+            <span class="k">if</span> <span class="n">edge</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">indegree_c</span> <span class="o">=</span> <span class="n">indegree_c</span> <span class="o">+</span> <span class="mi">1</span>
+
+                <span class="n">in_community</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;community&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span><span class="n">in_community</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;community&#39;</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                                                               <span class="n">in_community</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;community&#39;</span><span class="p">]][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="c1"># Update node indegree</span>
+                <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;indegree&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;indegree&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="s1">&#39;indegree&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="s1">&#39;indegree&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+
+                <span class="c1"># if old center has less indegree, it&#39;s not the center anymore</span>
+                <span class="k">if</span> <span class="n">center</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;community&#39;</span><span class="p">]]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">center</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;community&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">elif</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">center</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;community&#39;</span><span class="p">]]][</span><span class="s1">&#39;indegree&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;indegree&#39;</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;indegree&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="s1">&#39;indegree&#39;</span><span class="p">]:</span>
+                        <span class="n">center</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;community&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">center</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;community&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+            <span class="c1"># Any other edge in the community</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">in_community</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;community&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">in_community</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;community&#39;</span><span class="p">]][</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="n">in_community</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;community&#39;</span><span class="p">]][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># if the edge is between two nodes of different community</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ex_community</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;community&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">ex_community</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;community&#39;</span><span class="p">]]</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">ex_community</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="s1">&#39;community&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">ex_community</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="s1">&#39;community&#39;</span><span class="p">]]</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;outdegree&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;outdegree&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="s1">&#39;outdegree&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="s1">&#39;outdegree&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="c1"># if the edge is the first between two nodes</span>
+        <span class="k">if</span> <span class="n">edge</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">total_c</span> <span class="o">=</span> <span class="n">total_c</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="c1"># Loop on graph nodes</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+        <span class="n">nb_node_com</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s1">&#39;community&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">nb_node_com</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s1">&#39;community&#39;</span><span class="p">]]</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># Complexity N</span>
+
+        <span class="c1"># Unifiability</span>
+        <span class="n">uni_in</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s1">&#39;community&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">uni_in</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s1">&#39;community&#39;</span><span class="p">]]</span> <span class="o">+</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s1">&#39;indegree&#39;</span><span class="p">]</span>
+        <span class="n">uni_out</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s1">&#39;community&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">uni_out</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s1">&#39;community&#39;</span><span class="p">]]</span> <span class="o">+</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s1">&#39;outdegree&#39;</span><span class="p">]</span>
+
+        <span class="c1"># Isolability</span>
+        <span class="c1"># If there is at least 1 edge going out of the community by this node</span>
+        <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s1">&#39;outdegree&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s1">&#39;community&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">out</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s1">&#39;community&#39;</span><span class="p">]]</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">size</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s1">&#39;community&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">size</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s1">&#39;community&#39;</span><span class="p">]]</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="c1"># Loop on partition</span>
+    <span class="k">for</span> <span class="n">elm</span> <span class="ow">in</span> <span class="n">partition</span><span class="p">:</span>
+        <span class="n">partition_size</span><span class="p">[</span><span class="n">partition</span><span class="p">[</span><span class="n">elm</span><span class="p">]]</span> <span class="o">=</span> <span class="n">partition_size</span><span class="p">[</span><span class="n">partition</span><span class="p">[</span><span class="n">elm</span><span class="p">]]</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">nb_edges</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">()</span>
+    <span class="n">nb_nodes</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">elm</span> <span class="ow">in</span> <span class="n">partition_size</span><span class="p">:</span>
+        <span class="n">total</span> <span class="o">=</span> <span class="n">total</span> <span class="o">+</span> <span class="p">(</span><span class="n">nb_edges</span> <span class="o">/</span> <span class="n">nb_nodes</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">elm</span> <span class="o">/</span> <span class="n">nb_nodes</span><span class="p">)</span> <span class="o">*</span> <span class="n">elm</span>
+    <span class="k">for</span> <span class="n">incr</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_community</span><span class="p">):</span>
+        <span class="n">uni</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">uni_out</span><span class="p">[</span><span class="n">incr</span><span class="p">]</span> <span class="o">/</span> <span class="n">uni_in</span><span class="p">[</span><span class="n">incr</span><span class="p">])</span>
+        <span class="n">iso</span><span class="p">[</span><span class="n">incr</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="n">incr</span><span class="p">]</span> <span class="o">/</span> <span class="n">size</span><span class="p">[</span><span class="n">incr</span><span class="p">])</span>
+
+    <span class="c1"># Assign return values</span>
+
+    <span class="c1"># For each community</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_community</span><span class="p">):</span>  <span class="c1"># Complexity P</span>
+        <span class="n">density</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">density</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">in_community</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="p">(((</span><span class="n">nb_node_com</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">nb_node_com</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">fail_density</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">fail_density</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">in_community</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="p">(((</span><span class="n">nb_node_com</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">nb_node_com</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">externality</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">ex_community</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">ex_community</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">in_community</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="n">mean_partition_size</span> <span class="o">=</span> <span class="n">mean</span><span class="p">(</span><span class="n">partition_size</span><span class="p">)</span>
+    <span class="n">coverage</span> <span class="o">=</span> <span class="n">indegree</span> <span class="o">/</span> <span class="n">nb_edges</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="n">total</span> <span class="o">/</span> <span class="n">nb_edges</span>
+
+    <span class="n">modularity</span> <span class="o">=</span> <span class="n">coverage</span> <span class="o">-</span> <span class="n">total</span>
+    <span class="n">number_community_per_data</span> <span class="o">=</span> <span class="n">n_community</span> <span class="o">/</span> <span class="n">nb_edges</span>
+
+    <span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;coverage&#39;</span><span class="p">:</span> <span class="n">coverage</span><span class="p">,</span> <span class="s1">&#39;modularity&#39;</span><span class="p">:</span> <span class="n">modularity</span><span class="p">,</span> <span class="s1">&#39;density&#39;</span><span class="p">:</span> <span class="n">density</span><span class="p">,</span> <span class="s1">&#39;er_density&#39;</span><span class="p">:</span> <span class="n">fail_density</span><span class="p">,</span>
+               <span class="s1">&#39;externality&#39;</span><span class="p">:</span> <span class="n">externality</span><span class="p">,</span>
+               <span class="s1">&#39;mean_partition_size&#39;</span><span class="p">:</span> <span class="n">mean_partition_size</span><span class="p">,</span> <span class="s1">&#39;number_community_per_data&#39;</span><span class="p">:</span> <span class="n">number_community_per_data</span><span class="p">,</span>
+               <span class="s1">&#39;isolability&#39;</span><span class="p">:</span> <span class="n">iso</span><span class="p">,</span> <span class="s1">&#39;unifiability&#39;</span><span class="p">:</span> <span class="n">uni</span><span class="p">,</span> <span class="s1">&#39;center&#39;</span><span class="p">:</span> <span class="n">center</span><span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">metrics</span></div>
+
+
+
+<div class="viewcode-block" id="compute_stabilities">
+<a class="viewcode-back" href="../../../gpml.metrics.html#gpml.metrics.graph_community.compute_stabilities">[docs]</a>
+<span class="k">def</span> <span class="nf">compute_stabilities</span><span class="p">(</span><span class="n">g1</span><span class="p">,</span> <span class="n">g2</span><span class="p">,</span> <span class="n">nb_of_communities</span><span class="p">,</span> <span class="n">old_stabilities</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute stabilities between 2 graph and update global stabilities if there is a need to.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Stabilies between communities of g1 and g2, and global stabilities for corresponding communities.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    :param g1: networkx multigraph</span>
+<span class="sd">    :param g2: networkx multigraph</span>
+<span class="sd">    :param nb_of_communities: int</span>
+<span class="sd">    :param old_stabilities: float List</span>
+<span class="sd">    :t: int</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">same</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">nb_of_communities</span>
+    <span class="n">not_same</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">nb_of_communities</span>
+    <span class="n">nb_node_comm2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">nb_of_communities</span>
+    <span class="n">nb_node_comm1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">nb_of_communities</span>
+    <span class="c1"># For each nodes in the graph at t+1</span>
+    <span class="k">for</span> <span class="n">elm</span> <span class="ow">in</span> <span class="n">g2</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+        <span class="n">nb_node_comm2</span><span class="p">[</span><span class="n">g2</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">elm</span><span class="p">][</span><span class="s1">&#39;community&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">nb_node_comm2</span><span class="p">[</span><span class="n">g2</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">elm</span><span class="p">][</span><span class="s1">&#39;community&#39;</span><span class="p">]]</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">g2</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">elm</span><span class="p">][</span><span class="s1">&#39;community&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">g1</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">elm</span><span class="p">][</span><span class="s1">&#39;community&#39;</span><span class="p">]:</span>
+                <span class="n">same</span><span class="p">[</span><span class="n">g2</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">elm</span><span class="p">][</span><span class="s1">&#39;community&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">same</span><span class="p">[</span><span class="n">g2</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">elm</span><span class="p">][</span><span class="s1">&#39;community&#39;</span><span class="p">]]</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">not_same</span><span class="p">[</span><span class="n">g2</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">elm</span><span class="p">][</span><span class="s1">&#39;community&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">not_same</span><span class="p">[</span><span class="n">g2</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">elm</span><span class="p">][</span><span class="s1">&#39;community&#39;</span><span class="p">]]</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="c1"># Ip not in g1 at time t</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">not_same</span><span class="p">[</span><span class="n">g2</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">elm</span><span class="p">][</span><span class="s1">&#39;community&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">not_same</span><span class="p">[</span><span class="n">g2</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">elm</span><span class="p">][</span><span class="s1">&#39;community&#39;</span><span class="p">]]</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">for</span> <span class="n">elm</span> <span class="ow">in</span> <span class="n">g1</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+        <span class="n">nb_node_comm1</span><span class="p">[</span><span class="n">g1</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">elm</span><span class="p">][</span><span class="s1">&#39;community&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">nb_node_comm1</span><span class="p">[</span><span class="n">g1</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">elm</span><span class="p">][</span><span class="s1">&#39;community&#39;</span><span class="p">]]</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="n">stabilities</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">nb_of_communities</span>
+    <span class="n">new_stabilities</span> <span class="o">=</span> <span class="n">old_stabilities</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">nb_of_communities</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">nb_node_comm2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">nb_node_comm1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">stabilities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">same</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">nb_node_comm2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span>
+                    <span class="n">not_same</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">nb_node_comm2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">nb_node_comm1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">same</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">/</span> <span class="n">nb_node_comm1</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">new_stabilities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">old_stabilities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">stabilities</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">/</span> <span class="n">t</span>
+    <span class="k">return</span> <span class="n">stabilities</span><span class="p">,</span> <span class="n">new_stabilities</span></div>
+
+
+
+<div class="viewcode-block" id="propagate_communities">
+<a class="viewcode-back" href="../../../gpml.metrics.html#gpml.metrics.graph_community.propagate_communities">[docs]</a>
+<span class="k">def</span> <span class="nf">propagate_communities</span><span class="p">(</span><span class="n">g1</span><span class="p">,</span> <span class="n">g2</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">center_t</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Propagate stabilities from g1 to g2.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    New centers of communities in g2 and update of communities index in g2</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    :param g1: networkx multigraph</span>
+<span class="sd">    :param g2: networkx multigraph</span>
+<span class="sd">    :param center: Nodes id list</span>
+<span class="sd">    :param center_t: Nodes id list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get old center new community</span>
+    <span class="n">center_where</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">not_in</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">center</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">elm</span> <span class="ow">in</span> <span class="n">center_t</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">center_where</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">g1</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">elm</span><span class="p">][</span><span class="s1">&#39;community&#39;</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># not_in</span>
+            <span class="n">center_where</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">not_in</span><span class="p">)</span>
+            <span class="n">not_in</span> <span class="o">=</span> <span class="n">not_in</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="c1"># For each node in the graph at time t+1</span>
+    <span class="k">for</span> <span class="n">elm</span> <span class="ow">in</span> <span class="n">g2</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+        <span class="n">g2</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">elm</span><span class="p">][</span><span class="s1">&#39;old_community&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">g2</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">elm</span><span class="p">][</span><span class="s1">&#39;community&#39;</span><span class="p">]</span>
+        <span class="n">g2</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">elm</span><span class="p">][</span><span class="s1">&#39;community&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">center_where</span><span class="p">[</span><span class="n">g2</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">elm</span><span class="p">][</span><span class="s1">&#39;community&#39;</span><span class="p">]]</span>
+    <span class="k">return</span> <span class="n">center_where</span></div>
+
+
+
+<div class="viewcode-block" id="gc_metrics_first_order">
+<a class="viewcode-back" href="../../../gpml.metrics.html#gpml.metrics.graph_community.gc_metrics_first_order">[docs]</a>
+<span class="k">def</span> <span class="nf">gc_metrics_first_order</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute different graph and graph community metrics of first order.</span>
+
+<span class="sd">    This function calculates metrics by one run over the edges and nodes of the graph</span>
+<span class="sd">    and does not require the values of other metrics for calculation.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    List of the different calculated graph community metrics</span>
+<span class="sd">    List of the different calculated graph metrics</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    :param G: networkx  multigraph</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># pre-conditions</span>
+    <span class="n">nb_node</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">nb_node</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Graph not big enough&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+    <span class="n">indegree</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># indegree of G</span>
+    <span class="n">outdegree</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># outdegree of G</span>
+    <span class="n">n_community</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">elm</span><span class="p">][</span><span class="s1">&#39;community&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">elm</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># complexity N</span>
+    <span class="n">indegree_c</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_community</span>
+    <span class="n">outdegree_c</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_community</span>
+    <span class="n">nb_edge</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">nb_node_com</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_community</span>
+    <span class="n">nb_edge_com</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_community</span>
+    <span class="n">anchor</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_community</span>
+    <span class="n">n_connexion</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">n_connexion_c</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_community</span>
+    <span class="n">center</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_community</span>
+
+    <span class="c1"># Initialise indegree</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">set_node_attributes</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;indegree&quot;</span><span class="p">)</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">set_node_attributes</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;outdegree&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">:</span>
+        <span class="n">node1_community</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;community&#39;</span><span class="p">]</span>
+        <span class="n">node2_community</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="s1">&#39;community&#39;</span><span class="p">]</span>
+        <span class="n">nb_edge</span> <span class="o">=</span> <span class="n">nb_edge</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="c1"># if the edge has both node in the community</span>
+        <span class="k">if</span> <span class="n">node1_community</span> <span class="o">==</span> <span class="n">node2_community</span><span class="p">:</span>
+            <span class="c1"># Increment the number of edges within the same community</span>
+            <span class="n">nb_edge_com</span><span class="p">[</span><span class="n">node1_community</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="c1"># Increment the overall indegree count</span>
+            <span class="n">indegree</span> <span class="o">+=</span> <span class="mi">2</span>
+            <span class="c1"># Update node indegree</span>
+            <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;indegree&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="s1">&#39;indegree&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="c1"># Update the indegree count for the community</span>
+            <span class="n">indegree_c</span><span class="p">[</span><span class="n">node1_community</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">2</span>
+            <span class="c1"># if the edge is the first repertoried between the two nodes</span>
+            <span class="k">if</span> <span class="n">edge</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">n_connexion</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">n_connexion_c</span><span class="p">[</span><span class="n">node1_community</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="c1"># if old center has less indegree, it&#39;s not the center anymore</span>
+                <span class="k">if</span> <span class="n">center</span><span class="p">[</span><span class="n">node1_community</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">center</span><span class="p">[</span><span class="n">node1_community</span><span class="p">]</span> <span class="o">=</span> <span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">elif</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">center</span><span class="p">[</span><span class="n">node1_community</span><span class="p">]][</span><span class="s1">&#39;indegree&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;indegree&#39;</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;indegree&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="s1">&#39;indegree&#39;</span><span class="p">]:</span>
+                        <span class="n">center</span><span class="p">[</span><span class="n">node1_community</span><span class="p">]</span> <span class="o">=</span> <span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">center</span><span class="p">[</span><span class="n">node1_community</span><span class="p">]</span> <span class="o">=</span> <span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># if the edge is between two node of different community</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">nb_edge_com</span><span class="p">[</span><span class="n">node1_community</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">nb_edge_com</span><span class="p">[</span><span class="n">node2_community</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">outdegree_c</span><span class="p">[</span><span class="n">node1_community</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">outdegree_c</span><span class="p">[</span><span class="n">node2_community</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">outdegree</span> <span class="o">=</span> <span class="n">outdegree</span> <span class="o">+</span> <span class="mi">2</span>
+            <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;outdegree&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;outdegree&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="s1">&#39;outdegree&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="s1">&#39;outdegree&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">edge</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">n_connexion</span> <span class="o">=</span> <span class="n">n_connexion</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="n">anchor</span><span class="p">[</span><span class="n">node1_community</span><span class="p">]</span> <span class="o">=</span> <span class="n">anchor</span><span class="p">[</span><span class="n">node1_community</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="n">anchor</span><span class="p">[</span><span class="n">node2_community</span><span class="p">]</span> <span class="o">=</span> <span class="n">anchor</span><span class="p">[</span><span class="n">node1_community</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+        <span class="n">nb_node_com</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s1">&#39;community&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">nb_node_com</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s1">&#39;community&#39;</span><span class="p">]]</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># Complexity N</span>
+
+    <span class="c1"># metrics</span>
+    <span class="n">metrics_c</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;nb_of_nodes&#39;</span><span class="p">:</span> <span class="n">nb_node_com</span><span class="p">,</span>
+                 <span class="s1">&#39;in_degree&#39;</span><span class="p">:</span> <span class="n">indegree_c</span><span class="p">,</span>
+                 <span class="s1">&#39;out_degree&#39;</span><span class="p">:</span> <span class="n">outdegree_c</span><span class="p">,</span>
+                 <span class="s1">&#39;nb_of_edges&#39;</span><span class="p">:</span> <span class="n">nb_edge_com</span><span class="p">,</span>
+                 <span class="s1">&#39;anchor&#39;</span><span class="p">:</span> <span class="n">anchor</span><span class="p">,</span>
+                 <span class="s1">&#39;n_connection&#39;</span><span class="p">:</span> <span class="n">n_connexion_c</span><span class="p">,</span>
+                 <span class="s1">&#39;center&#39;</span><span class="p">:</span> <span class="n">center</span><span class="p">}</span>
+    <span class="n">metrics_g</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;nb_of_nodes&#39;</span><span class="p">:</span> <span class="n">nb_node</span><span class="p">,</span>
+                 <span class="s1">&#39;in_degree&#39;</span><span class="p">:</span> <span class="n">indegree</span><span class="p">,</span>
+                 <span class="s1">&#39;out_degree&#39;</span><span class="p">:</span> <span class="n">outdegree</span><span class="p">,</span>
+                 <span class="s1">&#39;nb_of_edges&#39;</span><span class="p">:</span> <span class="n">nb_edge</span><span class="p">,</span>
+                 <span class="s1">&#39;n_connection&#39;</span><span class="p">:</span> <span class="n">n_connexion</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">metrics_c</span><span class="p">,</span> <span class="n">metrics_g</span></div>
+
+
+
+<div class="viewcode-block" id="gc_metrics_second_order">
+<a class="viewcode-back" href="../../../gpml.metrics.html#gpml.metrics.graph_community.gc_metrics_second_order">[docs]</a>
+<span class="k">def</span> <span class="nf">gc_metrics_second_order</span><span class="p">(</span><span class="n">forder_metrics_c</span><span class="p">,</span> <span class="n">forder_metrics_g</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">     Compute different graph and graph community metrics of second order.</span>
+
+<span class="sd">    This function calculates metrics by one run over all the first-order metrics</span>
+<span class="sd">    for a given set of community and a graph.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    List of the different calculated graph community metrics</span>
+<span class="sd">    List of the different calculated graph metrics</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    :param forder_metrics_c: community metrics of first order</span>
+<span class="sd">    :param forder_metrics_g: graph metrics of first order</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n_community</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">forder_metrics_c</span><span class="p">[</span><span class="s1">&#39;in_degree&#39;</span><span class="p">])</span>
+    <span class="n">average_degree</span> <span class="o">=</span> <span class="p">(</span><span class="n">forder_metrics_g</span><span class="p">[</span><span class="s1">&#39;in_degree&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">forder_metrics_g</span><span class="p">[</span><span class="s1">&#39;out_degree&#39;</span><span class="p">])</span> <span class="o">/</span> <span class="n">forder_metrics_g</span><span class="p">[</span><span class="s1">&#39;nb_of_nodes&#39;</span><span class="p">]</span>
+    <span class="n">average_degree_c</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_community</span>
+    <span class="n">density</span> <span class="o">=</span> <span class="n">forder_metrics_g</span><span class="p">[</span><span class="s1">&#39;n_connection&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="p">((</span><span class="n">forder_metrics_g</span><span class="p">[</span><span class="s1">&#39;nb_of_nodes&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">forder_metrics_g</span><span class="p">[</span><span class="s1">&#39;nb_of_nodes&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">density_c</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_community</span>
+    <span class="n">edges_dist</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">externality</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_community</span>
+    <span class="n">conductance</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_community</span>
+    <span class="n">expansion</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_community</span>
+    <span class="n">NED</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_community</span>
+    <span class="n">NED_index</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_community</span><span class="p">):</span>
+
+        <span class="n">in_degree_i</span> <span class="o">=</span> <span class="n">forder_metrics_c</span><span class="p">[</span><span class="s1">&#39;in_degree&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">out_degree_i</span> <span class="o">=</span> <span class="n">forder_metrics_c</span><span class="p">[</span><span class="s1">&#39;out_degree&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">nb_of_edges_i</span> <span class="o">=</span> <span class="n">forder_metrics_c</span><span class="p">[</span><span class="s1">&#39;nb_of_edges&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">nb_of_nodes_i</span> <span class="o">=</span> <span class="n">forder_metrics_c</span><span class="p">[</span><span class="s1">&#39;nb_of_nodes&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">n_connection_i</span> <span class="o">=</span> <span class="n">forder_metrics_c</span><span class="p">[</span><span class="s1">&#39;n_connection&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">denominator_density</span> <span class="o">=</span> <span class="p">(</span><span class="n">nb_of_nodes_i</span> <span class="o">*</span> <span class="p">(</span><span class="n">nb_of_nodes_i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
+
+        <span class="c1"># Calculate the average degree for node i, handling potential division by zero</span>
+        <span class="k">if</span> <span class="n">nb_of_nodes_i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">average_degree_c</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">in_degree_i</span> <span class="o">+</span> <span class="n">out_degree_i</span><span class="p">)</span> <span class="o">/</span> <span class="n">nb_of_nodes_i</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">average_degree_c</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">denominator_density</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">density_c</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_connection_i</span> <span class="o">/</span> <span class="n">denominator_density</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">density_c</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">)</span> <span class="p">:</span>
+            <span class="n">density_c</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="n">edges_dist</span> <span class="o">=</span> <span class="n">edges_dist</span> <span class="o">+</span> <span class="n">nb_of_edges_i</span>
+        <span class="n">externality</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">out_degree_i</span> <span class="o">/</span> <span class="p">(</span><span class="n">out_degree_i</span> <span class="o">+</span> <span class="p">(</span><span class="n">in_degree_i</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="n">conductance</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">out_degree_i</span> <span class="o">/</span> <span class="p">(</span><span class="n">out_degree_i</span> <span class="o">+</span> <span class="n">in_degree_i</span><span class="p">)</span>
+        <span class="n">expansion</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">out_degree_i</span> <span class="o">/</span> <span class="n">nb_of_nodes_i</span>
+        <span class="n">NED</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">nb_of_nodes_i</span> <span class="o">+</span> <span class="n">n_connection_i</span> <span class="o">+</span> <span class="n">in_degree_i</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+                <span class="n">nb_of_nodes_i</span> <span class="o">+</span> <span class="p">((</span><span class="n">nb_of_nodes_i</span> <span class="o">*</span> <span class="p">(</span><span class="n">nb_of_nodes_i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">in_degree_i</span> <span class="o">+</span> <span class="n">out_degree_i</span><span class="p">)</span>
+        <span class="n">NED_index</span> <span class="o">=</span> <span class="n">NED_index</span> <span class="o">+</span> <span class="n">NED</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">in_degree_i</span>
+
+    <span class="n">edges_dist</span> <span class="o">=</span> <span class="n">edges_dist</span> <span class="o">/</span> <span class="n">forder_metrics_g</span><span class="p">[</span><span class="s1">&#39;nb_of_edges&#39;</span><span class="p">]</span>
+    <span class="n">NED_index</span> <span class="o">=</span> <span class="n">NED_index</span> <span class="o">/</span> <span class="p">(</span><span class="n">forder_metrics_g</span><span class="p">[</span><span class="s1">&#39;in_degree&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">forder_metrics_g</span><span class="p">[</span><span class="s1">&#39;out_degree&#39;</span><span class="p">])</span>
+    <span class="n">mean_community_size</span> <span class="o">=</span> <span class="n">mean</span><span class="p">(</span><span class="n">forder_metrics_c</span><span class="p">[</span><span class="s1">&#39;nb_of_nodes&#39;</span><span class="p">])</span>
+    <span class="c1"># metrics</span>
+    <span class="n">so_metrics_c</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;average_degree&#39;</span><span class="p">:</span> <span class="n">average_degree_c</span><span class="p">,</span>
+                    <span class="s1">&#39;density&#39;</span><span class="p">:</span> <span class="n">density_c</span><span class="p">,</span>
+                    <span class="s1">&#39;externality&#39;</span><span class="p">:</span> <span class="n">externality</span><span class="p">,</span>
+                    <span class="s1">&#39;conductance&#39;</span><span class="p">:</span> <span class="n">conductance</span><span class="p">,</span>
+                    <span class="s1">&#39;expansion&#39;</span><span class="p">:</span> <span class="n">expansion</span><span class="p">,</span>
+                    <span class="s1">&#39;NED&#39;</span><span class="p">:</span> <span class="n">NED</span><span class="p">}</span>
+    <span class="n">so_metrics_g</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;average_degree&#39;</span><span class="p">:</span> <span class="n">average_degree</span><span class="p">,</span>
+                    <span class="s1">&#39;density&#39;</span><span class="p">:</span> <span class="n">density</span><span class="p">,</span>
+                    <span class="s1">&#39;edges_dist&#39;</span><span class="p">:</span> <span class="n">edges_dist</span><span class="p">,</span>
+                    <span class="s1">&#39;NED_index&#39;</span><span class="p">:</span> <span class="n">NED_index</span><span class="p">,</span>
+                    <span class="s1">&#39;mean_community_size&#39;</span><span class="p">:</span> <span class="n">mean_community_size</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">so_metrics_c</span><span class="p">,</span> <span class="n">so_metrics_g</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Majed Jaber.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

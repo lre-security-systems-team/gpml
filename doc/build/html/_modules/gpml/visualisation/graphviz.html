@@ -1,0 +1,284 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>gpml.visualisation.graphviz &mdash; gpml 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            gpml
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../gpml.html">gpml package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">gpml</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">gpml.visualisation.graphviz</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for gpml.visualisation.graphviz</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module provides functions to visualize graphs using Networkx library.</span>
+
+<span class="sd">Contributors:</span>
+<span class="sd">    Julien MICHEL</span>
+
+<span class="sd">Project started on:</span>
+<span class="sd">    11/10/2022</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># contributors: Pierre Parrend, Amani Abou-Rida</span>
+<span class="c1"># project started on 11/10/2022</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">IPython</span> <span class="kn">import</span> <span class="n">get_ipython</span>
+<span class="kn">from</span> <span class="nn">pyvis.network</span> <span class="kn">import</span> <span class="n">Network</span>
+
+
+<div class="viewcode-block" id="extract_graph">
+<a class="viewcode-back" href="../../../gpml.visualisation.html#gpml.visualisation.graphviz.extract_graph">[docs]</a>
+<span class="k">def</span> <span class="nf">extract_graph</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">graph_type</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">src_addr</span><span class="p">,</span> <span class="n">dst_addr</span><span class="p">,</span> <span class="n">src_port</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dst_port</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">src_mac</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dst_mac</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extract the graph attack according to the type we need to show.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    graph of nodes and edges , attack_list for the type of attack found on the edge between two nodes (ip sources) ,</span>
+<span class="sd">    attack_labels for the label of the attacks in the dataset</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    :param dataset: dataset</span>
+<span class="sd">    :param dst_mac: destination mac</span>
+<span class="sd">    :param src_mac: source mac</span>
+<span class="sd">    :param dst_port: destination port</span>
+<span class="sd">    :param src_port: source port</span>
+<span class="sd">    :param dst_addr: destination ip</span>
+<span class="sd">    :param src_addr: source ip</span>
+<span class="sd">    :param label: label of the attack</span>
+<span class="sd">    :param graph_type: type of graph we need to show (ip, ip + proto, or ip + mac)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">format_supported</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">comp_field1</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">comp_field2</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">graph_type</span> <span class="o">==</span> <span class="s1">&#39;ip&#39;</span><span class="p">:</span>
+        <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;source_node&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="n">src_addr</span><span class="p">]</span>
+        <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;dst_node&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="n">dst_addr</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">graph_type</span> <span class="o">==</span> <span class="s1">&#39;ip_proto&#39;</span><span class="p">:</span>
+            <span class="n">comp_field1</span> <span class="o">=</span> <span class="s1">&#39;proto&#39;</span>
+            <span class="n">comp_field2</span> <span class="o">=</span> <span class="s1">&#39;proto&#39;</span>
+        <span class="k">elif</span> <span class="n">graph_type</span> <span class="o">==</span> <span class="s1">&#39;mac&#39;</span><span class="p">:</span>
+            <span class="n">comp_field1</span> <span class="o">=</span> <span class="n">src_mac</span>
+            <span class="n">comp_field2</span> <span class="o">=</span> <span class="n">dst_mac</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">format_supported</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">format_supported</span><span class="p">:</span>
+            <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;source_node&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="n">src_addr</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="n">comp_field1</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+            <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;dst_node&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="n">dst_addr</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="n">comp_field2</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Graph type not supported :&#39;</span> <span class="o">+</span> <span class="n">graph_type</span><span class="p">)</span>
+
+    <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;edge&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;source_node&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;dst_node&#39;</span><span class="p">]</span>
+    <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;edge_label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="n">src_port</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="n">dst_port</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span>
+        <span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
+    <span class="n">sip_list</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;source_node&#39;</span><span class="p">]</span>
+    <span class="n">dip_list</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;dst_node&#39;</span><span class="p">]</span>
+    <span class="n">ip_list</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="n">sip_list</span><span class="p">,</span> <span class="o">*</span><span class="n">dip_list</span><span class="p">]</span>
+
+    <span class="n">graph</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">ip_list</span><span class="p">)</span>
+    <span class="n">attack_labels</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="n">label</span><span class="p">]</span>
+    <span class="n">edge_label_list</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;edge_label&#39;</span><span class="p">]</span>
+
+    <span class="n">attack_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sip_list</span><span class="p">,</span> <span class="n">dip_list</span><span class="p">,</span> <span class="n">edge_label_list</span><span class="p">):</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span>
+            <span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">label</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
+        <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">d</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">_k</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">attack_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">2</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">graph</span><span class="p">,</span> <span class="n">attack_list</span><span class="p">,</span> <span class="n">attack_labels</span></div>
+
+
+
+<div class="viewcode-block" id="show_graph">
+<a class="viewcode-back" href="../../../gpml.visualisation.html#gpml.visualisation.graphviz.show_graph">[docs]</a>
+<span class="k">def</span> <span class="nf">show_graph</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Show the graph we extracted as nodes and edges in networkx.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    graph : graph with nodes and edges</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    display a graph with nodes and edges using networkx</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="show_graph_as_html">
+<a class="viewcode-back" href="../../../gpml.visualisation.html#gpml.visualisation.graphviz.show_graph_as_html">[docs]</a>
+<span class="k">def</span> <span class="nf">show_graph_as_html</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">attack_name</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Show the graph we extracted as nodes and edges in html file.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    display a graph with nodes and edges using pyvis and save it as html file</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    :param graph: graph with nodes and edges</span>
+<span class="sd">    :param title: title of the html page</span>
+<span class="sd">    :param url: URL for saving html file</span>
+<span class="sd">    :param attack_name: name of the attack</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">net</span> <span class="o">=</span> <span class="n">Network</span><span class="p">(</span><span class="n">notebook</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s1">&#39;600px&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s1">&#39;90%&#39;</span><span class="p">,</span>
+                  <span class="n">bgcolor</span><span class="o">=</span><span class="s1">&#39;#222222&#39;</span><span class="p">,</span> <span class="n">font_color</span><span class="o">=</span><span class="s2">&quot;purple&quot;</span><span class="p">,</span>
+                  <span class="n">heading</span><span class="o">=</span><span class="n">attack_name</span><span class="p">)</span>
+    <span class="n">net</span><span class="o">.</span><span class="n">from_nx</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+    <span class="n">net</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">url</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">title</span> <span class="o">+</span> <span class="s2">&quot;.html&quot;</span><span class="p">)</span>
+    <span class="n">net</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">title</span> <span class="o">+</span> <span class="s2">&quot;.html&quot;</span><span class="p">)</span>
+    <span class="n">net</span><span class="o">.</span><span class="n">show_buttons</span><span class="p">(</span><span class="n">filter_</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;physics&#39;</span><span class="p">])</span></div>
+
+
+
+<div class="viewcode-block" id="print_graph">
+<a class="viewcode-back" href="../../../gpml.visualisation.html#gpml.visualisation.graphviz.print_graph">[docs]</a>
+<span class="k">def</span> <span class="nf">print_graph</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">graph_type</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">src_addr</span><span class="p">,</span> <span class="n">dst_addr</span><span class="p">,</span> <span class="n">sport</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dport</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;graph_rep&#39;</span><span class="p">,</span>
+                <span class="n">attack_name</span><span class="o">=</span><span class="s1">&#39;ddos&#39;</span><span class="p">,</span>
+                <span class="n">src_mac</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dst_mac</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Print the graph we extracted as nodes and edges in html file and networkx.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    print a graph with nodes and edges</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    :param dataset: dataset</span>
+<span class="sd">    :param dst_mac: destination mac</span>
+<span class="sd">    :param src_mac: source mac</span>
+<span class="sd">    :param dst_port: destination port</span>
+<span class="sd">    :param src_port: source port</span>
+<span class="sd">    :param dst_addr: destination ip</span>
+<span class="sd">    :param src_addr: source ip</span>
+<span class="sd">    :param label: label of the attack</span>
+<span class="sd">    :param graph_type: type of graph we need to show (ip, ip + proto, or ip + mac)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">is_online_notebook</span><span class="p">():</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">shell</span> <span class="o">=</span> <span class="n">get_ipython</span><span class="p">()</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+            <span class="k">if</span> <span class="s1">&#39;google.colab&#39;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">)</span> <span class="ow">or</span> <span class="s1">&#39;ZMQInteractiveShell&#39;</span> <span class="ow">in</span> <span class="n">shell</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="n">is_online_notebook</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warning: You appear to be running this in an online notebook environment.&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;`show_graph_as_html()` may not function correctly if it requires localhost access.&quot;</span><span class="p">)</span>
+
+    <span class="n">connectivity_graph</span><span class="p">,</span> <span class="n">_attack_list</span><span class="p">,</span> <span class="n">_attack_labels</span> <span class="o">=</span> <span class="n">extract_graph</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">graph_type</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">src_addr</span><span class="p">,</span>
+                                                                   <span class="n">dst_addr</span><span class="p">,</span> <span class="n">sport</span><span class="p">,</span> <span class="n">dport</span><span class="p">,</span> <span class="n">src_mac</span><span class="p">,</span> <span class="n">dst_mac</span><span class="p">)</span>
+    <span class="n">show_graph</span><span class="p">(</span><span class="n">connectivity_graph</span><span class="p">)</span>
+    <span class="n">show_graph_as_html</span><span class="p">(</span><span class="n">connectivity_graph</span><span class="p">,</span> <span class="n">attack_name</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Majed Jaber.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
