@@ -259,7 +259,7 @@ def gc_metrics_first_order(G):
     # pre-conditions
     nb_node = G.number_of_nodes()
     if nb_node < 2:
-        print('Graph not big enough')
+        print('The graph should at least have 3 nodes')
         return 0
 
     indegree = 0  # indegree of G
