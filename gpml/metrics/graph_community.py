@@ -34,7 +34,7 @@ def gc_metrics(G, partition):
     """
     # pre-conditions
     if G.number_of_nodes() < 2:
-        print('Graph does not meet the minimum size requirement')
+        print('The graph should have at least 3 nodes')
         return 0
 
     # Initialize all necessary variables
