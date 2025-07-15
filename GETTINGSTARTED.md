@@ -20,7 +20,7 @@ They are unweighted.
 
 #### By whole dataset
 
-`insert_metrics_to_dataframe(dataframe, time_interval, date_time, edge_source, edge_dest, label, name, date_timestamp, community_strategy='louvain')`
+`extract_community_metrics(dataframe, time_interval, date_time, edge_source, edge_dest, label, name, date_timestamp, community_strategy='louvain')`
 
 Take a dataframe, represent it on dynamic graph and compute community metrics.
 
@@ -41,9 +41,9 @@ Take a dataframe, represent it on dynamic graph and compute community metrics.
 
   ```python
   import pandas as pd
-  from gpml.data_preparation.data_frame_handler import insert_metrics_to_dataframe
+  from gpml.data_preparation.data_frame_handler import extract_community_metrics
   df = pd.read_csv('data/ugr16/ugr_sample_100k.csv')
-  insert_metrics_to_dataframe(df, timedelta(minutes=5), 'Date time', ['Source IP'],
+  extract_community_metrics(df, timedelta(minutes=5), 'Date time', ['Source IP'],
                                ['Destination IP'], 'Label', 'ip5', False)
 
 #### By chunk
@@ -129,7 +129,7 @@ specified features.
 
   ```python
   import pandas as pd
-  from gpml.data_preparation.time_series_extractor import time_series_extractor
+  from gpml.data_preparation.time_series_extractor import extract_time_series
   df = pd.read_csv('data/bot_iot/UNSW_2018_IoT_Botnet.csv')
   extracted_timeseries = timeseries_extractor(df, 'stime', 's', ['stime',
   'saddr', 'daddr', 'pkts', 'bytes'], ['stime'], ['stime', 'saddr', 'daddr'],
@@ -159,7 +159,7 @@ spectral metrics for each window.
 - **Usage Example:**
 
   ```python
-  spectral_df = spectral_metrics_extractor(extracted_timeseries, 'stime', 'saddr',
+  spectral_df = extract_spectral_metrics(extracted_timeseries, 'stime', 'saddr',
   'daddr', 'pkts', 'bytes', 'rate', 'attack')
   ```
 

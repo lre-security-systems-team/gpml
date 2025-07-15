@@ -20,7 +20,7 @@ for&nbsp;dynamic&nbsp;graph&nbsp;analysis.<br>
 Functions:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;chunk_read_and_insert_gc_metrics&nbsp;-&nbsp;Processes&nbsp;chunks&nbsp;of&nbsp;CSV&nbsp;data&nbsp;to&nbsp;compute&nbsp;community&nbsp;metrics<br>
 &nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;outputs&nbsp;to&nbsp;a&nbsp;new&nbsp;CSV.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;insert_metrics_to_dataframe&nbsp;-&nbsp;Computes&nbsp;community&nbsp;metrics&nbsp;for&nbsp;a&nbsp;given&nbsp;dataframe<br>
+&nbsp;&nbsp;&nbsp;&nbsp;extract_community_metrics&nbsp;-&nbsp;Computes&nbsp;community&nbsp;metrics&nbsp;for&nbsp;a&nbsp;given&nbsp;dataframe<br>
 &nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;updates&nbsp;it&nbsp;with&nbsp;new&nbsp;metrics&nbsp;columns.<br>
 &nbsp;<br>
 Contributors:<br>
@@ -69,7 +69,7 @@ Parameters<br>
 :param&nbsp;edge_dest:&nbsp;Name&nbsp;of&nbsp;field&nbsp;in&nbsp;csv&nbsp;for&nbsp;edge&nbsp;destination&nbsp;id&nbsp;as&nbsp;list<br>
 :param&nbsp;label:&nbsp;Name&nbsp;of&nbsp;the&nbsp;label&nbsp;filed&nbsp;in&nbsp;csv<br>
 :param&nbsp;name:&nbsp;naming&nbsp;suffix&nbsp;for&nbsp;metrics</tt></dd></dl>
- <dl><dt><a name="-insert_metrics_to_dataframe"><strong>insert_metrics_to_dataframe</strong></a>(dataframe, time_interval, date_time, edge_source, edge_dest, label, name, community_strategy='louvain', continuity=True)</dt><dd><tt>Take&nbsp;a&nbsp;dataframe,&nbsp;represent&nbsp;it&nbsp;on&nbsp;dynamic&nbsp;graph&nbsp;and&nbsp;compute&nbsp;community&nbsp;metrics.<br>
+ <dl><dt><a name="-extract_community_metrics"><strong>extract_community_metrics</strong></a>(dataframe, time_interval, date_time, edge_source, edge_dest, label, name, community_strategy='louvain', continuity=True)</dt><dd><tt>Take&nbsp;a&nbsp;dataframe,&nbsp;represent&nbsp;it&nbsp;on&nbsp;dynamic&nbsp;graph&nbsp;and&nbsp;compute&nbsp;community&nbsp;metrics.<br>
 &nbsp;<br>
 Returns<br>
 -------<br>

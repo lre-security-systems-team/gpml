@@ -10,7 +10,7 @@ for dynamic graph analysis.
 Functions:
     chunk_read_and_insert_gc_metrics - Processes chunks of CSV data to compute community metrics
     and outputs to a new CSV.
-    insert_graph_community_metrics - Computes community metrics for a given dataframe
+    extract_community_metrics - Computes community metrics for a given dataframe
     and updates it with new metrics columns.
 
 Contributors:
@@ -22,7 +22,7 @@ Project started on:
 
 import sys
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 import itertools
 import networkx as nx
 import networkx.algorithms.community as nx_comm
@@ -46,7 +46,7 @@ def nested_insert_metrics_to_dataframe(dataframe, time_interval, date_time, edge
     Parameters
     ----------
     :param dataframe: pd.DataFrame()
-    :param time_interval: timedelta of graph window
+    :param time_interval: number of seconds of the graph window
     :param date_time: Name of the date field in dataframe
     :param edge_source: Name of field in dataframe for edge source id as list
     :param edge_dest: Name of field in dataframe for edge destination id as list
@@ -55,10 +55,16 @@ def nested_insert_metrics_to_dataframe(dataframe, time_interval, date_time, edge
     :param date_timestamp: True or False if date column type is already timestamp
     :param buffer_graph: None if first chunk, last graph otherwise
     """
-    if (not isinstance(edge_source, list) or not isinstance(edge_dest, list)):
+    if not isinstance(edge_source, list) or not isinstance(edge_dest, list):
         print('edge vertice have to be given as list')
         return dataframe
 
+    if not isinstance(time_interval, int):
+        raise ValueError("Parameter 'time_interval' must be an integer representing the time window in seconds.")
+    else:
+        time_interval = timedelta(seconds=time_interval)
+
+    # Check if the date_time column is in the correct format
     if date_timestamp is False:
         dataframe[date_time] = dataframe[date_time].apply(lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M:%S'))
     # sort dataframe by date to make the time interval selection
@@ -69,6 +75,7 @@ def nested_insert_metrics_to_dataframe(dataframe, time_interval, date_time, edge
     stop = 0
     size = 0
     t = 1
+
     current_stop = time_interval
 
     community = [0] * dataframe.shape[0]
@@ -530,7 +537,7 @@ def chunk_read_and_insert_gc_metrics(file_name, output_csv, time_interval, heade
     timedf.to_csv("scalability_" + output_csv, index=False)
 
 
-def insert_graph_community_metrics(dataframe, time_interval, date_time, edge_source, edge_dest, label, name,
+def extract_community_metrics(dataframe, time_interval, date_time, edge_source, edge_dest, label, name,
                                    date_timestamp, community_strategy='louvain'):
     """
     Take a dataframe, represent it on dynamic graph and compute community metrics.
