@@ -3,7 +3,7 @@ name: Kaggle kernel actions
 on:
   push:
     branches:
-      - master
+      - softwarex-modifs
 
 jobs:
   build:
