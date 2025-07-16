@@ -12,7 +12,9 @@ jobs:
       matrix:
         os: [ ubuntu-latest]
         python-version: ['3.9' ]
-    name: Python ${{ matrix.python-version }} ${{ matrix.os }} 
+    name: Python ${{ matrix.python-version }} ${{ matrix.os }}
+
+    steps:
     - name: Push kernel to kaggle
       uses: joelhanson/kaggle-kernel-actions
       with:
