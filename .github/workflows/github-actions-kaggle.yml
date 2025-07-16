@@ -10,12 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ ubuntu-latest]
-        python-version: ['3.9' ]
+        os: [ubuntu-latest]
+        python-version: ['3.9']
     name: Python ${{ matrix.python-version }} ${{ matrix.os }}
 
     steps:
-    uses: actions/checkout@v4
+      uses: actions/checkout@v4
     - name: Push kernel to kaggle
     uses: joelhanson/kaggle-kernel-actions
       with:
