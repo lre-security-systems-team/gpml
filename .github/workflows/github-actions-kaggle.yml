@@ -24,3 +24,4 @@ jobs:
           kaggle_make_new_kernel: true
           kernel_id: majedjaber/gpml-reproducible-capsule
           language: python
+          competition: titanic
