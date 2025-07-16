@@ -15,12 +15,12 @@ jobs:
     name: Python ${{ matrix.python-version }} ${{ matrix.os }}
 
     steps:
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
     - name: Push kernel to kaggle
-    uses: joelhanson/kaggle-kernel-actions
-      with:
-        kaggle_username: ${{ secrets.KAGGLE_JSON.username }}
-        kaggle_key: ${{ secrets.KAGGLE_JSON.key }}
-        kaggle_make_new_kernel: true
-        kernel_id: majedjaber/gpml-reproducible-capsule
-        language: python
+      uses: joelhanson/kaggle-kernel-actions
+        with:
+          kaggle_username: ${{ secrets.KAGGLE_JSON.username }}
+          kaggle_key: ${{ secrets.KAGGLE_JSON.key }}
+          kaggle_make_new_kernel: true
+          kernel_id: majedjaber/gpml-reproducible-capsule
+          language: python
