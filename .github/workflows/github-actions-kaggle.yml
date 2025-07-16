@@ -1,4 +1,4 @@
-name: Kaggle kernel actions
+name: Push Kaggle Kernel
 
 on:
   push:
@@ -6,23 +6,19 @@ on:
       - softwarex-modifs
 
 jobs:
-  deploy:
+  push-kernel:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        python-version: ['3.9']
-    name: Python ${{ matrix.python-version }} ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-    - name: Push kernel to kaggle
-      uses: joelhanson/kaggle-kernel-actions@main
-      with:
-        kaggle_username: ${{ secrets.KAGGLE_USERNAME }}
-        kaggle_key: ${{ secrets.KAGGLE_KEY }}
-        kaggle_make_new_kernel: true
-        kernel_id: majedjaber/gpml-reproducible-capsule
-        language: python
-        competition: titanic
+    - name: Install kaggle CLI and authenticate
+      run: |
+        pip install kaggle
+        mkdir -p ~/.kaggle
+        echo "{\"username\":\"${{ secrets.KAGGLE_USERNAME }}\",\"key\":\"${{ secrets.KAGGLE_KEY }}\"}" > ~/.kaggle/kaggle.json
+        chmod 600 ~/.kaggle/kaggle.json
+
+    - name: Push kernel to Kaggle
+      run: kaggle kernels push -p ./
