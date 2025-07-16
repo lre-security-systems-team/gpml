@@ -46,7 +46,7 @@ def nested_insert_metrics_to_dataframe(dataframe, time_interval, date_time, edge
     Parameters
     ----------
     :param dataframe: pd.DataFrame()
-    :param time_interval: number of seconds of the graph window
+    :param time_interval: number of seconds of the graph windows
     :param date_time: Name of the date field in dataframe
     :param edge_source: Name of field in dataframe for edge source id as list
     :param edge_dest: Name of field in dataframe for edge destination id as list
@@ -469,7 +469,7 @@ def chunk_read_and_insert_gc_metrics(file_name, output_csv, time_interval, heade
     Parameters
     ----------
     :param file_name: input csv file
-    :param time_interval: timedelta of graph window
+    :param time_interval: number of seconds of the graph windows
     :param community_strategy: Nodes id list
     :param chunksize: nb of csv line to load in memory as int
     :param date_time: Name of the date field in csv
@@ -478,6 +478,12 @@ def chunk_read_and_insert_gc_metrics(file_name, output_csv, time_interval, heade
     :param label: Name of the label filed in csv
     :param name: naming suffix for metrics
     """
+
+    if not isinstance(time_interval, int):
+        raise ValueError("Parameter 'time_interval' must be an integer representing the time window in seconds.")
+    else:
+        pass
+                                         
     timelist = []
     start = time.time()
     ## First Initialisation of dataframe ######
@@ -495,7 +501,7 @@ def chunk_read_and_insert_gc_metrics(file_name, output_csv, time_interval, heade
     df = df.sort_values(date_time)
 
     skip = chunksize + 1
-    current_stop = time_interval
+    current_stop = timedelta(seconds=time_interval)
 
     df, (last_multigraph, last_centers) = nested_insert_metrics_to_dataframe(df, time_interval, date_time, edge_source,
                                                                              edge_dest, label, name=name,
@@ -505,7 +511,7 @@ def chunk_read_and_insert_gc_metrics(file_name, output_csv, time_interval, heade
 
     timelist.append(time.time() - start)
 
-    current_stop = current_stop + time_interval
+    current_stop = current_stop + timedelta(seconds=time_interval)
     stop = 0
     while stop == 0:
         if header is None:
@@ -549,7 +555,7 @@ def extract_community_metrics(dataframe, time_interval, date_time, edge_source, 
     Parameters
     ----------
     :param dataframe: pd.DataFrame()
-    :param time_interval: timedelta of graph window
+    :param time_interval: number of seconds of the graph windows
     :param date_time: Name of the date field in dataframe
     :param edge_source: Name of field in dataframe for edge source id as list
     :param edge_dest: Name of field in dataframe for edge destination id as list
@@ -559,6 +565,11 @@ def extract_community_metrics(dataframe, time_interval, date_time, edge_source, 
     if not isinstance(edge_source, list) or not isinstance(edge_dest, list):
         print('edge vertice have to be given as list')
         return dataframe
+
+    if not isinstance(time_interval, int):
+        raise ValueError("Parameter 'time_interval' must be an integer representing the time window in seconds.")
+    else:
+        time_interval = timedelta(seconds=time_interval)                                    
 
     try:
         dataframe[date_time] = dataframe[date_time].apply(lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M:%S'))
