@@ -1,6 +1,6 @@
 {
   "title": "GPML Reproducible Capsule",
-  "code_file": "gpml-capsule.ipynb",
+  "code_file": "gpml-reproducible-capsule.ipynb",
   "language": "python",
   "kernel_type": "notebook",
   "is_private": true,
