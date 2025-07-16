@@ -19,8 +19,8 @@ jobs:
     - name: Push kernel to kaggle
       uses: joelhanson/kaggle-kernel-actions
         with:
-          kaggle_username: ${{ secrets.KAGGLE_JSON.username }}
-          kaggle_key: ${{ secrets.KAGGLE_JSON.key }}
+          kaggle_username: ${{ secrets.KAGGLE_USERNAME }}
+          kaggle_key: ${{ secrets.KAGGLE_KEY }}
           kaggle_make_new_kernel: true
           kernel_id: majedjaber/gpml-reproducible-capsule
           language: python
