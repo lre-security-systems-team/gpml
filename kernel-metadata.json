@@ -1,0 +1,17 @@
+{
+  "id": "majedjaber/gpml-reproducible-capsule",
+  "title": "GPML Reproducible Capsule",
+  "code_file": "gpml-reproducible-capsule.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_internet": true,
+  "dataset_sources": [
+    "majedjaber/train-test-dataset-bot-iot",
+    "julienmichel157/ugr-16-sample",
+    "julienmichel157/graph-processing-for-machine"
+  ],
+  "competition_sources": [],
+  "kernel_sources": []
+}

@@ -1,0 +1,24 @@
+name: Push Kaggle Kernel
+
+on:
+  push:
+    branches:
+      - softwarex-modifs
+
+jobs:
+  push-kernel:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install kaggle CLI and authenticate
+      run: |
+        pip install kaggle
+        mkdir -p ~/.kaggle
+        echo "{\"username\":\"${{ secrets.KAGGLE_USERNAME }}\",\"key\":\"${{ secrets.KAGGLE_KEY }}\"}" > ~/.kaggle/kaggle.json
+        chmod 600 ~/.kaggle/kaggle.json
+
+    - name: Push kernel to Kaggle
+      run: kaggle kernels push -p ./

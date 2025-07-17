@@ -10,7 +10,7 @@ for dynamic graph analysis.
 Functions:
     chunk_read_and_insert_gc_metrics - Processes chunks of CSV data to compute community metrics
     and outputs to a new CSV.
-    insert_graph_community_metrics - Computes community metrics for a given dataframe
+    extract_community_metrics - Computes community metrics for a given dataframe
     and updates it with new metrics columns.
 
 Contributors:
@@ -22,7 +22,7 @@ Project started on:
 
 import sys
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 import itertools
 import networkx as nx
 import networkx.algorithms.community as nx_comm
@@ -35,7 +35,7 @@ sys.path.append('.')
 
 
 def nested_insert_metrics_to_dataframe(dataframe, time_interval, date_time, edge_source, edge_dest, label, name,
-                                       date_timestamp, community_strategy='louvain', time_0=0, buffer_graph=None):
+                                       community_strategy='louvain', time_0=0, buffer_graph=None):
     """
     Take a dataframe, represent it on dynamic graph and compute community metrics.
 
@@ -46,21 +46,29 @@ def nested_insert_metrics_to_dataframe(dataframe, time_interval, date_time, edge
     Parameters
     ----------
     :param dataframe: pd.DataFrame()
-    :param time_interval: timedelta of graph window
+    :param time_interval: number of seconds of the graph windows
     :param date_time: Name of the date field in dataframe
     :param edge_source: Name of field in dataframe for edge source id as list
     :param edge_dest: Name of field in dataframe for edge destination id as list
     :param label: Name of the target column in dataframe as str
     :param name: name to attach to new column
-    :param date_timestamp: True or False if date column type is already timestamp
     :param buffer_graph: None if first chunk, last graph otherwise
     """
-    if (not isinstance(edge_source, list) or not isinstance(edge_dest, list)):
+    if not isinstance(edge_source, list) or not isinstance(edge_dest, list):
         print('edge vertice have to be given as list')
         return dataframe
 
-    if date_timestamp is False:
+    if not isinstance(time_interval, int):
+        raise ValueError("Parameter 'time_interval' must be an integer representing the time window in seconds.")
+    else:
+        time_interval = timedelta(seconds=time_interval)
+
+    # Check if the date_time column is in the correct format
+    try:
         dataframe[date_time] = dataframe[date_time].apply(lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M:%S'))
+    # sort dataframe by date to make the time interval selection
+    except Exception:
+        pass
     # sort dataframe by date to make the time interval selection
     dataframe = dataframe.sort_values(date_time)
     # get the first date
@@ -69,6 +77,7 @@ def nested_insert_metrics_to_dataframe(dataframe, time_interval, date_time, edge
     stop = 0
     size = 0
     t = 1
+
     current_stop = time_interval
 
     community = [0] * dataframe.shape[0]
@@ -460,7 +469,7 @@ def chunk_read_and_insert_gc_metrics(file_name, output_csv, time_interval, heade
     Parameters
     ----------
     :param file_name: input csv file
-    :param time_interval: timedelta of graph window
+    :param time_interval: number of seconds of the graph windows
     :param community_strategy: Nodes id list
     :param chunksize: nb of csv line to load in memory as int
     :param date_time: Name of the date field in csv
@@ -469,6 +478,12 @@ def chunk_read_and_insert_gc_metrics(file_name, output_csv, time_interval, heade
     :param label: Name of the label filed in csv
     :param name: naming suffix for metrics
     """
+
+    if not isinstance(time_interval, int):
+        raise ValueError("Parameter 'time_interval' must be an integer representing the time window in seconds.")
+    else:
+        pass
+                                         
     timelist = []
     start = time.time()
     ## First Initialisation of dataframe ######
@@ -486,18 +501,17 @@ def chunk_read_and_insert_gc_metrics(file_name, output_csv, time_interval, heade
     df = df.sort_values(date_time)
 
     skip = chunksize + 1
-    current_stop = time_interval
+    current_stop = timedelta(seconds=time_interval)
 
     df, (last_multigraph, last_centers) = nested_insert_metrics_to_dataframe(df, time_interval, date_time, edge_source,
                                                                              edge_dest, label, name=name,
-                                                                             date_timestamp=True,
                                                                              community_strategy=community_strategy)
 
     df.to_csv(output_csv, index=False, mode='w')
 
     timelist.append(time.time() - start)
 
-    current_stop = current_stop + time_interval
+    current_stop = current_stop + timedelta(seconds=time_interval)
     stop = 0
     while stop == 0:
         if header is None:
@@ -513,7 +527,6 @@ def chunk_read_and_insert_gc_metrics(file_name, output_csv, time_interval, heade
             df, (last_multigraph, last_centers) = nested_insert_metrics_to_dataframe(df, time_interval, date_time,
                                                                                      edge_source, edge_dest,
                                                                                      label, name=name,
-                                                                                     date_timestamp=True,
                                                                                      community_strategy=community_strategy,
                                                                                      time_0=1, buffer_graph=(
                     last_multigraph, last_centers))
@@ -530,8 +543,8 @@ def chunk_read_and_insert_gc_metrics(file_name, output_csv, time_interval, heade
     timedf.to_csv("scalability_" + output_csv, index=False)
 
 
-def insert_graph_community_metrics(dataframe, time_interval, date_time, edge_source, edge_dest, label, name,
-                                   date_timestamp, community_strategy='louvain'):
+def extract_community_metrics(dataframe, time_interval, date_time, edge_source, edge_dest, label, name,
+                                community_strategy='louvain'):
     """
     Take a dataframe, represent it on dynamic graph and compute community metrics.
 
@@ -542,20 +555,28 @@ def insert_graph_community_metrics(dataframe, time_interval, date_time, edge_sou
     Parameters
     ----------
     :param dataframe: pd.DataFrame()
-    :param time_interval: timedelta of graph window
+    :param time_interval: number of seconds of the graph windows
     :param date_time: Name of the date field in dataframe
     :param edge_source: Name of field in dataframe for edge source id as list
     :param edge_dest: Name of field in dataframe for edge destination id as list
     :param label: Name of the target column in dataframe as str
     :param name: name to attach to new column
-    :param date_timestamp: True or False if date column type is already timestamp
     """
     if not isinstance(edge_source, list) or not isinstance(edge_dest, list):
         print('edge vertice have to be given as list')
         return dataframe
 
-    if not date_timestamp:
+    if not isinstance(time_interval, int):
+        raise ValueError("Parameter 'time_interval' must be an integer representing the time window in seconds.")
+    else:
+        time_interval = timedelta(seconds=time_interval)                                    
+
+    try:
         dataframe[date_time] = dataframe[date_time].apply(lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M:%S'))
+    # sort dataframe by date to make the time interval selection
+    except Exception:
+        pass
+
     # sort dataframe by date to make the time interval selection
     dataframe = dataframe.sort_values(date_time)
     # get the first date

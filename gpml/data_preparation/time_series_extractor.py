@@ -17,7 +17,7 @@ Project started on:
 import pandas as pd
 
 
-def time_series_extractor(df, stime, time_unit, features_list, sortby_list, groupby_list, aggregation_dict):
+def extract_time_series(df, stime, time_unit, features_list, sortby_list, groupby_list, aggregation_dict):
     """
     Convert raw data into a time series format by grouping and aggregating specified features.
 

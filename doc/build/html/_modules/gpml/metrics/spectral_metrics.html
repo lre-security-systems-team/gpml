@@ -93,9 +93,7 @@
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 
-
-<span class="c1"># from gpml.data_preparation.time_series_extractor import time_series_extractor</span>
-
+<span class="c1"># from gpml.data_preparation.time_series_extractor import extract_time_series</span>
 
 <div class="viewcode-block" id="connectedness">
 <a class="viewcode-back" href="../../../gpml.metrics.html#gpml.metrics.spectral_metrics.connectedness">[docs]</a>
@@ -241,9 +239,9 @@
 
 
 
-<div class="viewcode-block" id="spectral_metrics_extractor">
-<a class="viewcode-back" href="../../../gpml.metrics.html#gpml.metrics.spectral_metrics.spectral_metrics_extractor">[docs]</a>
-<span class="k">def</span> <span class="nf">spectral_metrics_extractor</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">stime</span><span class="p">,</span> <span class="n">saddr</span><span class="p">,</span> <span class="n">daddr</span><span class="p">,</span> <span class="n">pkts</span><span class="p">,</span> <span class="n">bytes_size</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">lbl_category</span><span class="p">,</span>
+<div class="viewcode-block" id="extract_spectral_metrics">
+<a class="viewcode-back" href="../../../gpml.metrics.html#gpml.metrics.spectral_metrics.extract_spectral_metrics">[docs]</a>
+<span class="k">def</span> <span class="nf">extract_spectral_metrics</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">stime</span><span class="p">,</span> <span class="n">saddr</span><span class="p">,</span> <span class="n">daddr</span><span class="p">,</span> <span class="n">pkts</span><span class="p">,</span> <span class="n">bytes_size</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">lbl_category</span><span class="p">,</span>
                                <span class="n">src_pkts</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">dst_pkts</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">src_bytes</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">dst_bytes</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Apply time windowing techniques on the time series data, computing various spectral metrics for each window.</span>
@@ -409,7 +407,7 @@
 <span class="c1">#    timeseries = time_series_extractor(df, stime, time_unit, features_list, sortby_list, groupby_list,</span>
 <span class="c1">#                                       aggregation_dict)</span>
 <span class="c1">#</span>
-<span class="c1">#    spectral_df = spectral_metrics_extractor(timeseries, stime, saddr, daddr, pkts, bytes_size, rate, lbl_category)</span>
+<span class="c1">#    spectral_df = extract_spectral_metrics(timeseries, stime, saddr, daddr, pkts, bytes_size, rate, lbl_category)</span>
 <span class="c1">#    return spectral_df</span>
 </pre></div>
 

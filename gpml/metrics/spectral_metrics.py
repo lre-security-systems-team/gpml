@@ -152,7 +152,7 @@ def get_first_value(series):
     return series.iloc[0]
 
 
-def spectral_metrics_extractor(ts, stime, saddr, daddr, pkts='', bytes_size='', rate='', lbl_category='',
+def extract_spectral_metrics(ts, stime, saddr, daddr, pkts='', bytes_size='', rate='', lbl_category='',
                                src_pkts='', dst_pkts='', src_bytes='', dst_bytes='', duration=''):
     """
     Apply time windowing techniques on the time series data, computing various spectral metrics for each window.
@@ -240,7 +240,7 @@ def spectral_metrics_extractor(ts, stime, saddr, daddr, pkts='', bytes_size='', 
             ts2 = unique_time_window[len(unique_time_window) - 1]
             mask = (time_window[stime] <= ts2) & (time_window[stime] >= current_timestamp)
             sub_time_window = time_window[mask]
-            print(ts2)
+
             if (sub_time_window.tail(1)[lbl_category] != 0).any():
                 attack_label = sub_time_window.tail(1)[lbl_category].item()
 
@@ -274,47 +274,38 @@ def spectral_metrics_extractor(ts, stime, saddr, daddr, pkts='', bytes_size='', 
                 'spkts': 'mean', 'srate': 'mean'
                 , 'drate': 'mean', 'weight': 'sum'
             })
-            # print(agg_series)
             # Convert the series to a single-row DataFrame
             agg_row = agg_series.to_frame().transpose()
             agg_row['attack'] = attack_label
 
-            agg_row['t1_m1_pkts'] = [t1_m1_pkts]
-            agg_row['t2_m1_pkts'] = [t2_m1_pkts]
-            agg_row['t1_m1_bytes'] = [t1_m1_bytes]
-            agg_row['t2_m1_bytes'] = [t2_m1_bytes]
-            agg_row['t1_m1_rate'] = [t1_m1_rate]
-            agg_row['t2_m1_rate'] = [t2_m1_rate]
+            agg_row['ts1_m1_pkts'] = [t1_m1_pkts]
+            agg_row['ts2_m1_pkts'] = [t2_m1_pkts]
+            agg_row['ts1_m1_bytes'] = [t1_m1_bytes]
+            agg_row['ts2_m1_bytes'] = [t2_m1_bytes]
+            agg_row['ts1_m1_rate'] = [t1_m1_rate]
+            agg_row['ts2_m1_rate'] = [t2_m1_rate]
 
-            agg_row['t1_m2_pkts'] = [t1_m2_pkts]
-            agg_row['t2_m2_pkts'] = [t2_m2_pkts]
-            agg_row['t1_m2_bytes'] = [t1_m2_bytes]
-            agg_row['t2_m2_bytes'] = [t2_m2_bytes]
-            agg_row['t1_m2_rate'] = [t1_m2_rate]
-            agg_row['t2_m2_rate'] = [t2_m2_rate]
+            agg_row['ts1_m2_pkts'] = [t1_m2_pkts]
+            agg_row['ts2_m2_pkts'] = [t2_m2_pkts]
+            agg_row['ts1_m2_bytes'] = [t1_m2_bytes]
+            agg_row['ts2_m2_bytes'] = [t2_m2_bytes]
+            agg_row['ts1_m2_rate'] = [t1_m2_rate]
+            agg_row['ts2_m2_rate'] = [t2_m2_rate]
 
-            agg_row['t1_m3_pkts'] = [t1_m3_pkts]
-            agg_row['t2_m3_pkts'] = [t2_m3_pkts]
-            agg_row['t1_m3_bytes'] = [t1_m3_bytes]
-            agg_row['t2_m3_bytes'] = [t2_m3_bytes]
-            agg_row['t1_m3_rate'] = [t1_m3_rate]
-            agg_row['t2_m3_rate'] = [t2_m3_rate]
+            agg_row['ts1_m3_pkts'] = [t1_m3_pkts]
+            agg_row['ts2_m3_pkts'] = [t2_m3_pkts]
+            agg_row['ts1_m3_bytes'] = [t1_m3_bytes]
+            agg_row['ts2_m3_bytes'] = [t2_m3_bytes]
+            agg_row['ts1_m3_rate'] = [t1_m3_rate]
+            agg_row['ts2_m3_rate'] = [t2_m3_rate]
 
-            agg_row['t1_m4_pkts'] = [t1_m4_pkts]
-            agg_row['t2_m4_pkts'] = [t2_m4_pkts]
-            agg_row['t1_m4_bytes'] = [t1_m4_bytes]
-            agg_row['t2_m4_bytes'] = [t2_m4_bytes]
-            agg_row['t1_m4_rate'] = [t1_m4_rate]
-            agg_row['t2_m4_rate'] = [t2_m4_rate]
+            agg_row['ts1_m4_pkts'] = [t1_m4_pkts]
+            agg_row['ts2_m4_pkts'] = [t2_m4_pkts]
+            agg_row['ts1_m4_bytes'] = [t1_m4_bytes]
+            agg_row['ts2_m4_bytes'] = [t2_m4_bytes]
+            agg_row['ts1_m4_rate'] = [t1_m4_rate]
+            agg_row['ts2_m4_rate'] = [t2_m4_rate]
 
             # Concatenate the list of dictionaries into a new DataFrame
             df_topredict = pd.concat([df_topredict, agg_row], ignore_index=True)
     return df_topredict
-
-# def spectral_analysis_pipeline(df, stime, time_unit, features_list, sortby_list, groupby_list, aggregation_dict,
-#                               saddr, daddr, pkts, bytes_size, rate, lbl_category):
-#    timeseries = time_series_extractor(df, stime, time_unit, features_list, sortby_list, groupby_list,
-#                                       aggregation_dict)
-#
-#    spectral_df = spectral_metrics_extractor(timeseries, stime, saddr, daddr, pkts, bytes_size, rate, lbl_category)
-#    return spectral_df
