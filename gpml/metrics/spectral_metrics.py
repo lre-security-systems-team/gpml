@@ -309,11 +309,3 @@ def extract_spectral_metrics(ts, stime, saddr, daddr, pkts='', bytes_size='', ra
             # Concatenate the list of dictionaries into a new DataFrame
             df_topredict = pd.concat([df_topredict, agg_row], ignore_index=True)
     return df_topredict
-
-# def spectral_analysis_pipeline(df, stime, time_unit, features_list, sortby_list, groupby_list, aggregation_dict,
-#                               saddr, daddr, pkts, bytes_size, rate, lbl_category):
-#    timeseries = time_series_extractor(df, stime, time_unit, features_list, sortby_list, groupby_list,
-#                                       aggregation_dict)
-#
-#    spectral_df = extract_spectral_metrics(timeseries, stime, saddr, daddr, pkts, bytes_size, rate, lbl_category)
-#    return spectral_df
