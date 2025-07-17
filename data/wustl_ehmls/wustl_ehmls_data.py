@@ -1,0 +1,12 @@
+saddr = 'SrcAddr'
+daddr = 'DstAddr'
+sport = 'Sport'
+dport = 'Dport'
+smac = 'SrcMac'
+dmac = 'DstMac'
+attack_label = 'Label'
+time_step = 'time_step'
+
+data_file_spoofing = 'data/wustl_ehmls/wustl-ehmls-2020_excerpt_spoofing.csv'
+data_file_no_spoofing = 'data/wustl_ehmls/wustl-ehmls-2020_excerpt_no_spoofing.csv'
+data_file_long = 'data/wustl_ehmls/wustl-ehmls-2020_excerpt_long.csv'

@@ -1,0 +1,7 @@
+saddr = 'src_ip'
+daddr = 'dst_ip'
+attack_label = 'label'
+time_step = 'ts'
+proto = 'proto'
+dst_port = 'dst_port'
+src_port = 'src_port'
