@@ -15,8 +15,25 @@ are available in the "graph_representation" folder.
 You will find the GPML documentation here: [GETTINGSTARTED.md](GETTINGSTARTED.md)
 
 ## Installation
-
+<pre>
 pip install -r requirement.txt
+</pre>
+Before installing the requirements, it is advised to create a virtual
+environment to avoid polluting your system or conflict with your
+python package space. To set up a virtual environment:
+<pre>
+virtualenv {name_of_environment}
+</pre>
+To activate the environment:
+<pre>
+source {path/to/name_of_environment/bin/activate}
+</pre>
+To make sure you are using the right python path of your environment you can type:
+<pre>
+which python
+</pre>
+which should return : path/to/name_of_environment/bin/python
+
 
 ## Support
 
