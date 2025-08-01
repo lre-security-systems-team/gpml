@@ -15,6 +15,8 @@ are available in the "graph_representation" folder.
 You will find the GPML documentation here: [GETTINGSTARTED.md](GETTINGSTARTED.md)
 
 ## Installation
+
+To install the python packages:
 <pre>
 pip install -r requirement.txt
 </pre>
